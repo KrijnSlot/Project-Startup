@@ -12,7 +12,7 @@ public class FishingRod : MonoBehaviour
     public bool LookingAtWater;
 
     public bool isCasted;
-    public bool isPulling;
+    public bool pulled;
 
     Animator animator;
     public GameObject bobber;
@@ -44,7 +44,7 @@ public class FishingRod : MonoBehaviour
                 {
                     LookingAtWater = true;
 
-                    if (Input.GetMouseButtonDown(0) && !isCasted && !isPulling)
+                    if (Input.GetMouseButtonDown(0) && !isCasted && !pulled)
                     {
                         StartCoroutine(CastRod(hit.point));
                     }
@@ -62,7 +62,7 @@ public class FishingRod : MonoBehaviour
         }
 
         // --- > IF USING ROPE < --- //
-        if (isCasted || isPulling)
+        if (isCasted || pulled)
         {
             if (start_of_rope != null && start_of_rod != null && end_of_rope != null)
             {
@@ -106,7 +106,7 @@ public class FishingRod : MonoBehaviour
     {
         animator.SetTrigger("Pull");
         isCasted = false;
-        isPulling = true;
+        pulled = true;
 
         // ---- > Start Minigame Logic
     }
