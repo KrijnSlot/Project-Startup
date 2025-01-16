@@ -15,7 +15,7 @@ public class GunShootingScript : MonoBehaviour
 
     bool shooting, readyToShoot, reloading;
 
-    public PickUpScript pickupScript;
+    public PickUpScript mainCamPickUpScript;
 
     public Camera cam;
     public Transform attackPoint;
@@ -33,11 +33,16 @@ public class GunShootingScript : MonoBehaviour
 
         /*ScoreScript.bulletCount = bulletsLeft;*/
         /*ScoreScript.magSizeCount = magSize;*/
+
+        //pickupScript.gameObject.GetComponent<PickUpScript>();
     }
 
     private void Update()
     {
-        MyInput();
+        if (mainCamPickUpScript.holdingGun)
+        {
+            MyInput();
+        }
     }
 
     private void MyInput()

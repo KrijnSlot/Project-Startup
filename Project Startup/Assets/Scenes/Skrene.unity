@@ -510,7 +510,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -717,6 +717,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 918696670}
   holdPos: {fileID: 952120411}
+  holdingGun: 0
+  holdingRod: 0
+  gunObj: {fileID: 1742922373}
+  rodObj: {fileID: 1781353498}
   heldObj: {fileID: 0}
   throwForce: 500
   pickUpRange: 5
@@ -1020,15 +1024,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 952120410}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.38, y: -0.37899995, z: 1.008}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0.585, y: -0.37899995, z: 1.008}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2039582757}
   - {fileID: 2114237573}
   m_Father: {fileID: 540894492}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1 &1003650238
 GameObject:
   m_ObjectHideFlags: 0
@@ -1080,7 +1084,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -1216,7 +1220,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -1459,8 +1463,8 @@ MonoBehaviour:
   fireRate: 1
   magSize: 12
   bulletsPerTap: 1
-  allowButtonHold: 0
-  pickupScript: {fileID: 0}
+  allowButtonHold: 1
+  pickupScript: {fileID: 540894496}
   cam: {fileID: 540894493}
   attackPoint: {fileID: 1155294116}
   src: {fileID: 1592212683}
@@ -1469,7 +1473,8 @@ MonoBehaviour:
   isEnemy:
     serializedVersion: 2
     m_Bits: 8
-  muzzleFlash: {fileID: 0}
+  muzzleFlash: {fileID: 1000010254994808, guid: 9defeac88977c0d448aa4541073ee9e4,
+    type: 3}
   bulletHoleGraphic: {fileID: 0}
   bulletHitEnemy: {fileID: 0}
 --- !u!54 &1742922376
@@ -1961,7 +1966,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -2253,7 +2258,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
