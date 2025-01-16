@@ -61,7 +61,7 @@ public class PickUpScript : MonoBehaviour
         {
             MoveObject(); //keep object position at holdPos
             RotateObject();
-            if (Input.GetKeyDown(KeyCode.T) && canDrop == true) //Mous0 (leftclick) is used to throw.
+            if (Input.GetKeyDown(KeyCode.T) && canDrop == true) 
             {
                 StopClipping();
                 ThrowObject();

@@ -8,6 +8,8 @@ using UnityEngine.UIElements;
 
 public class FishingRod : MonoBehaviour
 {
+    public PickUpScript mainCamPickUpScript;
+
     public bool isEquipped;
     public bool LookingAtWater;
 
@@ -31,6 +33,14 @@ public class FishingRod : MonoBehaviour
 
 
     void Update()
+    {
+        if (mainCamPickUpScript.holdingRod)
+        {
+            myInputs();
+        }
+    }
+
+    void myInputs()
     {
         if (isEquipped)
         {
@@ -84,7 +94,6 @@ public class FishingRod : MonoBehaviour
             PullRod();
         }
     }
-
 
     IEnumerator CastRod(Vector3 targetPosition)
     {
