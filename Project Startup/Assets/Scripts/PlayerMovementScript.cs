@@ -66,4 +66,4 @@ public class PlayerMovement : MonoBehaviour
 
         rb.AddForce(movingDirection.normalized * movingSpeed * 10f, ForceMode.Force);
     }
-}
+}   
