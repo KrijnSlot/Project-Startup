@@ -5,16 +5,14 @@ TagManager:
   serializedVersion: 2
   tags:
   - FishingArea
-  - Enemy
-  - canPickUp
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Ground
+  - 
   - Water
   - UI
-  - holdLayer
+  - Ground
   - 
   - 
   - 
