@@ -15,6 +15,8 @@ public class GunShootingScript : MonoBehaviour
 
     bool shooting, readyToShoot, reloading;
 
+    public PickUpScript pickupScript;
+
     public Camera cam;
     public Transform attackPoint;
     public AudioSource src;
