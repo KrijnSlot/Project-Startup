@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8606627106570755276
+--- !u!1 &2392342742800771105
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,49 +8,48 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3663574046589066970}
-  - component: {fileID: 2866131123912745114}
-  - component: {fileID: 8021943912370984578}
-  - component: {fileID: 7779788674681845504}
-  - component: {fileID: 7853969851480433196}
-  - component: {fileID: 1395153842552409307}
-  m_Layer: 0
-  m_Name: Bobber
-  m_TagString: Untagged
+  - component: {fileID: 2637577949660498363}
+  - component: {fileID: 1088387891582518375}
+  - component: {fileID: 2814743620023371811}
+  - component: {fileID: 2256867585962033517}
+  - component: {fileID: 8563650166874470364}
+  m_Layer: 7
+  m_Name: Fish
+  m_TagString: canPickUp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3663574046589066970
+--- !u!4 &2637577949660498363
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8606627106570755276}
+  m_GameObject: {fileID: 2392342742800771105}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.1273243, y: -0, z: -0, w: 0.99186116}
-  m_LocalPosition: {x: 0, y: 1, z: -6.01}
-  m_LocalScale: {x: 0.16326, y: 0.16326, z: 0.16326}
-  m_ConstrainProportionsScale: 0
+  m_LocalRotation: {x: 0.18660975, y: 0, z: 0, w: 0.98243415}
+  m_LocalPosition: {x: -2.009, y: 1.014, z: 1.5296731}
+  m_LocalScale: {x: 0.26, y: 0.26, z: 0.26}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &2866131123912745114
+  m_LocalEulerAnglesHint: {x: 21.51, y: 0, z: 0}
+--- !u!33 &1088387891582518375
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8606627106570755276}
+  m_GameObject: {fileID: 2392342742800771105}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &8021943912370984578
+--- !u!23 &2814743620023371811
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8606627106570755276}
+  m_GameObject: {fileID: 2392342742800771105}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -64,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 4a3e93abc17480b42a963b07da72af3b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -86,13 +85,13 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &7779788674681845504
+--- !u!136 &2256867585962033517
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8606627106570755276}
+  m_GameObject: {fileID: 2392342742800771105}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -109,13 +108,13 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &7853969851480433196
+--- !u!54 &8563650166874470364
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8606627106570755276}
+  m_GameObject: {fileID: 2392342742800771105}
   serializedVersion: 4
   m_Mass: 1
   m_Drag: 0
@@ -132,22 +131,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1395153842552409307
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8606627106570755276}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 796c4d8aac405584d90915ee44ba0580, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxFishDistance: 3
-  fishLayerName: isFish
-  closesFish: {fileID: 0}

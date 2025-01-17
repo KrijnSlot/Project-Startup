@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class FishCheckScript : MonoBehaviour
 {
+    public float maxFishDistance = 5;
     public string fishLayerName = "isFish";
     private int fishLayer;
 
-    [Header("LEAVE EMPTY")]
-    public GameObject closesFish;
+    [HideInInspector] public GameObject closesFish;
 
     void Start()
     {
@@ -15,12 +15,14 @@ public class FishCheckScript : MonoBehaviour
 
     void Update()
     {
-        closesFish = fish();
+        closesFish = FindClosestFish();
     }
 
-    public GameObject fish()
+    public GameObject FindClosestFish()
     {
         GameObject[] allFish = GameObject.FindObjectsOfType<GameObject>();
+        GameObject closestFish = null;
+        float shortestDistance = maxFishDistance; // Start with the maximum allowable distance
 
         foreach (GameObject fish in allFish)
         {
@@ -29,13 +31,23 @@ public class FishCheckScript : MonoBehaviour
                 // Calculate the distance between the bobber and the fish
                 float distance = Vector3.Distance(transform.position, fish.transform.position);
 
-                Debug.Log($"Distance to {fish.name}: {distance}");
-
-                return fish;
+                if (distance < shortestDistance)
+                {
+                    shortestDistance = distance;
+                    closestFish = fish;
+                }
             }
         }
 
-        Debug.Log("No fish found in range");
-        return null;
+        if (closestFish != null)
+        {
+            Debug.Log($"Closest fish is {closestFish.name} at distance {shortestDistance}");
+        }
+        else
+        {
+            Debug.Log("No fish within range.");
+        }
+
+        return closestFish;
     }
 }
