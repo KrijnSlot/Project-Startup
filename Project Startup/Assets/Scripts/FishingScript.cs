@@ -27,9 +27,9 @@ public class FishingRod : MonoBehaviour
 
     Transform baitPosition;
 
-
     private float timer;
     private float randomTime;
+    private bool fishCaught;
 
 
     private void Start()
@@ -132,7 +132,7 @@ public class FishingRod : MonoBehaviour
 
                 // Perform your desired action here, e.g., catch the fish
                 caughtFish = bobberFishCheckScript.closesFish;
-
+                fishCaught = true;
                 // Reset the timer for the next cycle
                 ResetTimer();
 
@@ -150,13 +150,18 @@ public class FishingRod : MonoBehaviour
         isCasted = false;
         pulled = true;
 
-        // ---- > Start Minigame Logic
+        if (fishCaught)
+        {
+            // ---- > Start Minigame Logic
+
+            fishCaught = false;
+        }
     }
 
     void ResetTimer()
     {
         timer = 0f;
-        randomTime = UnityEngine.Random.Range(3f, 8f); // Random value between 1 and 5 seconds
+        randomTime = UnityEngine.Random.Range(2f, 7f); // Random value between 1 and 5 seconds
         Debug.Log($"New random time set: {randomTime} seconds");
     }
 }
