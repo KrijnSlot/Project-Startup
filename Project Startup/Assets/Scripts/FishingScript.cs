@@ -9,6 +9,7 @@ using UnityEngine.UIElements;
 public class FishingRod : MonoBehaviour
 {
     public PickUpScript mainCamPickUpScript;
+    public FishCheckScript bobberFishCheckScript;
 
     public bool isEquipped;
     public bool LookingAtWater;
@@ -22,15 +23,21 @@ public class FishingRod : MonoBehaviour
     public GameObject start_of_rope;   // --- > IF USING ROPE   
     public GameObject start_of_rod;    // --- > IF USING ROPE   
 
+    private GameObject caughtFish;
+
     Transform baitPosition;
+
+
+    private float timer;
+    private float randomTime;
+
 
     private void Start()
     {
         animator = GetComponent<Animator>();
         isEquipped = true;
+        ResetTimer();
     }
-
-
 
     void Update()
     {
@@ -85,7 +92,7 @@ public class FishingRod : MonoBehaviour
             }
             else
             {
-                Debug.Log("MISSING ROPE REFERENCES");
+                Debug.Log("no rope reference in inspector");
             }
         }
 
@@ -108,7 +115,33 @@ public class FishingRod : MonoBehaviour
 
         baitPosition = instantiatedBait.transform;
 
+        // Reset the timer and set a new random time when casting
+        ResetTimer();
+
         // ---- > Start Fish Bite Logic
+        while (isCasted)
+        {
+            // Increment the timer
+            timer += Time.deltaTime;
+
+            // Check if the timer exceeds or equals the random time
+            if (timer >= randomTime)
+            {
+                Debug.Log("Random timer reached!");
+                Debug.Log("catch");
+
+                // Perform your desired action here, e.g., catch the fish
+                caughtFish = bobberFishCheckScript.closesFish;
+
+                // Reset the timer for the next cycle
+                ResetTimer();
+
+                // Break the loop to stop the coroutine once the fish is caught
+                break;
+            }
+
+            yield return null; // Wait for the next frame
+        }
     }
 
     private void PullRod()
@@ -119,4 +152,13 @@ public class FishingRod : MonoBehaviour
 
         // ---- > Start Minigame Logic
     }
+
+    void ResetTimer()
+    {
+        timer = 0f;
+        randomTime = UnityEngine.Random.Range(3f, 8f); // Random value between 1 and 5 seconds
+        Debug.Log($"New random time set: {randomTime} seconds");
+    }
 }
+
+

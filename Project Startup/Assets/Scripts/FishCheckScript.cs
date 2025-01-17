@@ -1,9 +1,12 @@
 using UnityEngine;
 
-public class BobberFishDistance : MonoBehaviour
+public class FishCheckScript : MonoBehaviour
 {
     public string fishLayerName = "isFish";
     private int fishLayer;
+
+    [Header("LEAVE EMPTY")]
+    public GameObject closesFish;
 
     void Start()
     {
@@ -12,17 +15,27 @@ public class BobberFishDistance : MonoBehaviour
 
     void Update()
     {
-        GameObject[] allObjects = GameObject.FindObjectsOfType<GameObject>();
+        closesFish = fish();
+    }
 
-        foreach (GameObject obj in allObjects)
+    public GameObject fish()
+    {
+        GameObject[] allFish = GameObject.FindObjectsOfType<GameObject>();
+
+        foreach (GameObject fish in allFish)
         {
-            if (obj.layer == fishLayer)
+            if (fish.layer == fishLayer)
             {
                 // Calculate the distance between the bobber and the fish
-                float distance = Vector3.Distance(transform.position, obj.transform.position);
+                float distance = Vector3.Distance(transform.position, fish.transform.position);
 
-                Debug.Log($"Distance to {obj.name}: {distance}");
+                Debug.Log($"Distance to {fish.name}: {distance}");
+
+                return fish;
             }
         }
+
+        Debug.Log("No fish found in range");
+        return null;
     }
 }

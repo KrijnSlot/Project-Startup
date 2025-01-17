@@ -1406,6 +1406,7 @@ GameObject:
   - component: {fileID: 1781353499}
   - component: {fileID: 1781353504}
   - component: {fileID: 1781353503}
+  - component: {fileID: 1781353505}
   m_Layer: 0
   m_Name: Cylinder
   m_TagString: canPickUp
@@ -1496,7 +1497,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.23938349, y: -0.0062684715, z: 0.025415303, w: 0.9705722}
   m_LocalPosition: {x: 0.3, y: 0.6, z: -5.77}
-  m_LocalScale: {x: 0.03, y: 0.46, z: 0.03}
+  m_LocalScale: {x: 0.04, y: 0.55, z: 0.04}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1514,6 +1515,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCamPickUpScript: {fileID: 540894496}
+  bobberFishCheckScript: {fileID: 1395153842552409307, guid: a4f993bf41d9d5e4c8400f73f6ffa104,
+    type: 3}
   isEquipped: 0
   LookingAtWater: 0
   isCasted: 0
@@ -1543,6 +1546,33 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!54 &1781353505
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1781353498}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1815150238
 GameObject:
   m_ObjectHideFlags: 0
