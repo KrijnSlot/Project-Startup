@@ -7,7 +7,7 @@ public class FishFlockScript : MonoBehaviour
     public GameObject goalPrefab;
     public static float swimRange = 3;
 
-    [SerializeField]static int numFish = 150;
+    [SerializeField]static int numFish = 5;
     public static GameObject[] allFish = new GameObject[numFish];
     public static Vector3 goalPos = Vector3.zero;
 
