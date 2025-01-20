@@ -8,6 +8,12 @@ public class PickUpScript : MonoBehaviour
     public GameObject player;
     public Transform holdPos;
 
+    [HideInInspector] public bool holdingGun;
+    [HideInInspector] public bool holdingRod;
+
+    public GameObject gunObj;
+    public GameObject rodObj;
+
     [HideInInspector] public GameObject heldObj;
 
     public float throwForce = 500f;
@@ -55,7 +61,7 @@ public class PickUpScript : MonoBehaviour
         {
             MoveObject(); //keep object position at holdPos
             RotateObject();
-            if (Input.GetKeyDown(KeyCode.T) && canDrop == true) //Mous0 (leftclick) is used to throw.
+            if (Input.GetKeyDown(KeyCode.T) && canDrop == true) 
             {
                 StopClipping();
                 ThrowObject();
@@ -74,6 +80,9 @@ public class PickUpScript : MonoBehaviour
             heldObj.layer = LayerNumber; //change the object layer to the holdLayer
             //make sure object doesnt collide with player, it can cause weird bugs
             Physics.IgnoreCollision(heldObj.GetComponent<Collider>(), player.GetComponent<Collider>(), true);
+
+            if (heldObj.Equals(gunObj)) { holdingGun = true; }
+            else if (heldObj.Equals(rodObj)) { holdingRod = true; }
         }
     }
     void DropObject()
@@ -131,6 +140,9 @@ public class PickUpScript : MonoBehaviour
             heldObj.transform.position = transform.position + new Vector3(0f, -0.5f, 0f); //offset slightly downward to stop object dropping above player 
             //if your player is small, change the -0.5f to a smaller number (in magnitude) ie: -0.1f
         }
+        //disabling the gun and/or the rod when throwing something.
+        holdingGun = false;
+        holdingRod = false;
     }
 
     void GrabIndicator()
