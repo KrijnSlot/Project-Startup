@@ -16,6 +16,8 @@ public class FishingRod : MonoBehaviour
 
     public bool isCasted;
     public bool pulled;
+    public bool timerDone;
+    public bool fishCaught;
 
     Animator animator;
     public GameObject bobber;
@@ -29,13 +31,14 @@ public class FishingRod : MonoBehaviour
 
     private float timer;
     private float randomTime;
-    private bool fishCaught;
+
+    private GameObject instantiatedBait;
 
 
     private void Start()
     {
         animator = GetComponent<Animator>();
-        isEquipped = true;
+        isEquipped = false;
         ResetTimer();
     }
 
@@ -44,7 +47,9 @@ public class FishingRod : MonoBehaviour
         if (mainCamPickUpScript.holdingRod)
         {
             myInputs();
+            isEquipped = true;
         }
+        else { isEquipped = false; }
     }
 
     void myInputs()
@@ -104,13 +109,14 @@ public class FishingRod : MonoBehaviour
 
     IEnumerator CastRod(Vector3 targetPosition)
     {
+        fishCaught = false;
         isCasted = true;
         animator.SetTrigger("Cast");
 
         // Create a delay between the animation and when the bait appears in the water
         yield return new WaitForSeconds(1f);
 
-        GameObject instantiatedBait = Instantiate(bobber);
+        instantiatedBait = Instantiate(bobber);
         instantiatedBait.transform.position = targetPosition;
 
         baitPosition = instantiatedBait.transform;
@@ -132,7 +138,7 @@ public class FishingRod : MonoBehaviour
 
                 // Perform your desired action here, e.g., catch the fish
                 caughtFish = bobberFishCheckScript.closesFish;
-                fishCaught = true;
+                timerDone = true;
                 // Reset the timer for the next cycle
                 ResetTimer();
 
@@ -150,18 +156,36 @@ public class FishingRod : MonoBehaviour
         isCasted = false;
         pulled = true;
 
+        if (timerDone && pulled)
+        {
+            timerDone = false;
+            fishCaught = true;
+        }
+        else if (!timerDone && pulled)
+        {
+            isCasted = false;
+        }
+
         if (fishCaught)
         {
+            GameManager.RandomAddMoney(10, 100);
+            bool miniGameDone = false;
             // ---- > Start Minigame Logic
+            if (miniGameDone) 
+            {
+                fishCaught = false; 
 
-            fishCaught = false;
+            }
         }
+
+        pulled = false;
+        Destroy(instantiatedBait);
     }
 
     void ResetTimer()
     {
         timer = 0f;
-        randomTime = UnityEngine.Random.Range(2f, 7f); // Random value between 1 and 5 seconds
+        randomTime = UnityEngine.Random.Range(2f, 6f); // Random value between 1 and 5 seconds
         Debug.Log($"New random time set: {randomTime} seconds");
     }
 }
