@@ -21,9 +21,7 @@ public class FishingRod : MonoBehaviour
 
     Animator animator;
     public GameObject bobber;
-    public GameObject end_of_rope;  // --- > IF USING ROPE
-    public GameObject start_of_rope;   // --- > IF USING ROPE   
-    public GameObject start_of_rod;    // --- > IF USING ROPE   
+    public GameObject rope;
 
     private GameObject caughtFish;
 
@@ -32,11 +30,12 @@ public class FishingRod : MonoBehaviour
     private float timer;
     private float randomTime;
 
-    private GameObject instantiatedBait;
-
+    //private GameObject instantiatedBait;
 
     private void Start()
     {
+        rope.SetActive(false);
+        bobber.SetActive(false);
         animator = GetComponent<Animator>();
         isEquipped = false;
         ResetTimer();
@@ -83,24 +82,6 @@ public class FishingRod : MonoBehaviour
             }
         }
 
-        // --- > IF USING ROPE < --- //
-        if (isCasted || pulled)
-        {
-            if (start_of_rope != null && start_of_rod != null && end_of_rope != null)
-            {
-                start_of_rope.transform.position = start_of_rod.transform.position;
-
-                if (baitPosition != null)
-                {
-                    end_of_rope.transform.position = baitPosition.position;
-                }
-            }
-            else
-            {
-                Debug.Log("no rope reference in inspector");
-            }
-        }
-
         if (isCasted && Input.GetMouseButtonDown(1))
         {
             PullRod();
@@ -116,10 +97,12 @@ public class FishingRod : MonoBehaviour
         // Create a delay between the animation and when the bait appears in the water
         yield return new WaitForSeconds(1f);
 
-        instantiatedBait = Instantiate(bobber);
-        instantiatedBait.transform.position = targetPosition;
+        rope.SetActive(true);
+        bobber.SetActive(true);
+        //instantiatedBait = Instantiate(bobber);
+        bobber.transform.position = targetPosition;
 
-        baitPosition = instantiatedBait.transform;
+        baitPosition = bobber.transform;
 
         // Reset the timer and set a new random time when casting
         ResetTimer();
@@ -179,7 +162,8 @@ public class FishingRod : MonoBehaviour
         }
 
         pulled = false;
-        Destroy(instantiatedBait);
+        rope.SetActive(false);
+        bobber.SetActive(false);
     }
 
     void ResetTimer()
