@@ -5,9 +5,9 @@ public class FishFlockScript : MonoBehaviour
 {
     public GameObject fishPrefab;
     public GameObject goalPrefab;
-    public static float swimRange = 3;
+    public static float swimRange = 10;
 
-    [SerializeField]static int numFish = 5;
+    [SerializeField]static int numFish = 50;
     public static GameObject[] allFish = new GameObject[numFish];
     public static Vector3 goalPos = Vector3.zero;
 
@@ -15,7 +15,7 @@ public class FishFlockScript : MonoBehaviour
     {
         for (int i = 0; i < numFish; i++)
         {
-            Vector3 pos = new Vector3(Random.Range(-swimRange, swimRange), Random.Range(1, 20), Random.Range(-swimRange, swimRange));
+            Vector3 pos = new Vector3(Random.Range(-swimRange, swimRange), Random.Range(-2, 0), Random.Range(-swimRange, swimRange));
 
             allFish[i] = (GameObject)Instantiate(fishPrefab, pos, Quaternion.identity);
         }
@@ -30,7 +30,7 @@ public class FishFlockScript : MonoBehaviour
     {
         if (Random.Range(1, 10000) < 50)
         {
-            goalPos = new Vector3(Random.Range(-swimRange, swimRange), Random.Range(1, 20), Random.Range(-swimRange, swimRange));
+            goalPos = new Vector3(Random.Range(-swimRange, swimRange), Random.Range(-2, 0), Random.Range(-swimRange, swimRange));
             goalPrefab.transform.position = goalPos;
         }
     }

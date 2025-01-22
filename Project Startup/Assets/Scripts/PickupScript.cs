@@ -33,7 +33,7 @@ public class PickUpScript : MonoBehaviour
     {
         GrabIndicator();
 
-        if (Input.GetKeyDown(KeyCode.E)) //change E to whichever key you want to press to pick up
+        if (Input.GetKeyDown(KeyCode.E))
         {
             if (heldObj == null)
             {
@@ -53,15 +53,15 @@ public class PickUpScript : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Q) && canDrop == true)
         {
-            StopClipping(); //prevents object from clipping through walls
+            StopClipping(); 
             DropObject();
         }
 
-        if (heldObj != null) //if player is holding object
+        if (heldObj != null)
         {
-            MoveObject(); //keep object position at holdPos
+            MoveObject(); 
             RotateObject();
-            if (Input.GetKeyDown(KeyCode.T) && canDrop == true) 
+            if (Input.GetKeyDown(KeyCode.T) && canDrop == true)
             {
                 StopClipping();
                 ThrowObject();
@@ -76,8 +76,8 @@ public class PickUpScript : MonoBehaviour
             heldObj = pickUpObj;
             heldObjRb = pickUpObj.GetComponent<Rigidbody>();
             heldObjRb.isKinematic = true;
-            heldObjRb.transform.parent = holdPos.transform; //parent object to holdposition
-            heldObj.layer = LayerNumber; //change the object layer to the holdLayer
+            heldObjRb.transform.parent = holdPos.transform;
+            heldObj.layer = LayerNumber;
             //make sure object doesnt collide with player, it can cause weird bugs
             Physics.IgnoreCollision(heldObj.GetComponent<Collider>(), player.GetComponent<Collider>(), true);
 
@@ -89,10 +89,10 @@ public class PickUpScript : MonoBehaviour
     {
         //re-enable collision with player
         Physics.IgnoreCollision(heldObj.GetComponent<Collider>(), player.GetComponent<Collider>(), false);
-        heldObj.layer = 0; //object assigned back to default layer
+        heldObj.layer = 0;
         heldObjRb.isKinematic = false;
-        heldObj.transform.parent = null; //unparent object
-        heldObj = null; //undefine game object
+        heldObj.transform.parent = null;
+        heldObj = null;
     }
     void MoveObject()
     {
@@ -107,7 +107,6 @@ public class PickUpScript : MonoBehaviour
 
             float XaxisRotation = Input.GetAxis("Mouse X") * rotationSensitivity;
             float YaxisRotation = Input.GetAxis("Mouse Y") * rotationSensitivity;
-            //rotate the object depending on mouse X-Y Axis
             heldObj.transform.Rotate(Vector3.down, XaxisRotation);
             heldObj.transform.Rotate(Vector3.right, YaxisRotation);
         }
@@ -126,18 +125,15 @@ public class PickUpScript : MonoBehaviour
         heldObjRb.AddForce(transform.forward * throwForce);
         heldObj = null;
     }
-    void StopClipping() //function only called when dropping/throwing
+    void StopClipping()
     {
-        var clipRange = Vector3.Distance(heldObj.transform.position, transform.position); //distance from holdPos to the camera
-        //have to use RaycastAll as object blocks raycast in center screen
-        //RaycastAll returns array of all colliders hit within the cliprange
+        var clipRange = Vector3.Distance(heldObj.transform.position, transform.position); 
+
         RaycastHit[] hits;
         hits = Physics.RaycastAll(transform.position, transform.TransformDirection(Vector3.forward), clipRange);
-        //if the array length is greater than 1, meaning it has hit more than just the object we are carrying
         if (hits.Length > 1)
         {
-            //change object position to camera position 
-            heldObj.transform.position = transform.position + new Vector3(0f, -0.5f, 0f); //offset slightly downward to stop object dropping above player 
+            heldObj.transform.position = transform.position + new Vector3(0f, -0.5f, 0f); 
             //if your player is small, change the -0.5f to a smaller number (in magnitude) ie: -0.1f
         }
         //disabling the gun and/or the rod when throwing something.
