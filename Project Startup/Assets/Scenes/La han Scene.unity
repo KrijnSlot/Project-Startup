@@ -1045,7 +1045,6 @@ GameObject:
   - component: {fileID: 1297945998}
   - component: {fileID: 1297945997}
   - component: {fileID: 1297945996}
-  - component: {fileID: 1297946000}
   m_Layer: 3
   m_Name: Cube
   m_TagString: Enemy
@@ -1139,18 +1138,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1297946000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1297945995}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b8f6b95fd5bd4444911d5c148b4f5d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1381631133
 GameObject:
   m_ObjectHideFlags: 0
@@ -1192,6 +1179,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1452486936}
   - component: {fileID: 1452486937}
+  - component: {fileID: 1452486938}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -1233,6 +1221,18 @@ MonoBehaviour:
   yRotation: 0
   topClamp: -89
   botClamp: 89
+--- !u!114 &1452486938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1452486935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b8f6b95fd5bd4444911d5c148b4f5d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1741659860
 GameObject:
   m_ObjectHideFlags: 0
@@ -1411,7 +1411,8 @@ MonoBehaviour:
   isEnemy:
     serializedVersion: 2
     m_Bits: 8
-  muzzleFlash: {fileID: 0}
+  muzzleFlash: {fileID: 1000010254994808, guid: 9defeac88977c0d448aa4541073ee9e4,
+    type: 3}
   bulletHoleGraphic: {fileID: 0}
   bulletHitEnemy: {fileID: 0}
 --- !u!1 &1915982741
