@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 2256867585962033517}
   - component: {fileID: 7528156729701751712}
   - component: {fileID: -2017352229337692583}
-  - component: {fileID: -8989610932878558168}
   m_Layer: 7
   m_Name: Shark
   m_TagString: canPickUp
@@ -145,30 +144,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2392342742800771105}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5fd9695086833c54abe9899ae8e2ac07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0
-  neighborDistance: 3
---- !u!114 &-8989610932878558168
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2392342742800771105}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5af103f2e8509f64596e2af042ae454f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  boat: {fileID: 0}
-  sharkSpeed: 5
-  isBoat:
-    serializedVersion: 2
-    m_Bits: 256
 --- !u!1001 &8099252045773945443
 PrefabInstance:
   m_ObjectHideFlags: 0
