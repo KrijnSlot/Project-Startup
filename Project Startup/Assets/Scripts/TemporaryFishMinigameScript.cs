@@ -1,15 +1,22 @@
-using System;
+//using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class TemporaryFishMinigameScript : MonoBehaviour
 {
+    [Header("GameObjects")]
     [SerializeField] private Slider skillCheckSlider; // Reference to the UI Slider
     [SerializeField] private RectTransform targetRangeImage;
-    private float movingLineValue, randomLineBorder, topPivotSlider, bottemPivotSlider;
-    private bool lineIsMoving, valueMovingUp;
+    [Header("Speed")]
+    [SerializeField] float velocity = 0.01f;
+    
+    float randomPosition, allowedRange, clampedRange, parentHeight;
+    private float movingLineValue, topPivotSlider, bottemPivotSlider, randomActualPosition, barRange;
+    private bool lineIsMoving;
 
     void Start()
     {
@@ -18,69 +25,82 @@ public class TemporaryFishMinigameScript : MonoBehaviour
         /*Debug.Log("top pivot is: " + topPivotSlider + " and bottem pivot is: " + bottemPivotSlider);*/
 
         lineIsMoving = true;
-        valueMovingUp = true;
 
-        randomLineBorder = UnityEngine.Random.Range(-1f, 0.8f);
+        parentHeight = ((RectTransform)transform).sizeDelta.x;
+        barRange = (parentHeight) / 2;                                             //185 / 2
+        clampedRange = (parentHeight - targetRangeImage.sizeDelta.y) / 2;     //185 -20 / 2
+        allowedRange = clampedRange / barRange;
+
+        randomPosition = Random.Range (-allowedRange, allowedRange);
+        //randomPosition = allowedRange;
+        // Debug.Log(range);
+
+        randomActualPosition = randomPosition * barRange;
+        targetRangeImage.anchoredPosition = new Vector2(randomActualPosition, 0);
+
+
     }
 
-    void Update()
+
+    private void Update()
     {
         UpdateTargetRangeVisual();
         SkillCheck();
-        /*Debug.Log("The line is at: " + movingLineValue);
-        Debug.Log("The border is in between: " + randomLineBorder + " and: " + (randomLineBorder + 0.2f));*/
-    }
-
-    void SkillCheck()
-    {
-        if (movingLineValue >= topPivotSlider)
-        {
-            valueMovingUp = false;
-        }
-        else if (movingLineValue <= bottemPivotSlider)
-        {
-            valueMovingUp = true;
-        }
-
-        if (valueMovingUp && lineIsMoving)
-        {
-            movingLineValue += 0.01f;
-        }
-        else if (!valueMovingUp && lineIsMoving)
-        {
-            movingLineValue -= 0.01f;
-        }
-
-        skillCheckSlider.value = movingLineValue;
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
             lineIsMoving = false;
-            if (movingLineValue >= randomLineBorder && movingLineValue <= randomLineBorder + 0.2f)
+            /*if (movingLineValue >= randomLineBorder && movingLineValue <= randomLineBorder + 0.2f)
             {
                 Debug.Log("You did it!");
             }
             else
             {
                 Debug.Log("You did not do it...");
-            }
+            }*/
         }
         if (Input.GetKeyDown(KeyCode.I))
         {
-            randomLineBorder = UnityEngine.Random.Range(-1f, 0.8f);
+
             lineIsMoving = true;
         }
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            randomPosition = Random.Range(-allowedRange, allowedRange);
+            //randomPosition = allowedRange;
+            // Debug.Log(range);
+
+            randomActualPosition = randomPosition * barRange;
+            targetRangeImage.anchoredPosition = new Vector2(randomActualPosition, 0);
+
+            lineIsMoving = true;
+        }
+
+        //Debug.Log("The line is at: " + movingLineValue);
+        //Debug.Log("The border is in between: " + randomLineBorder + " and: " + (randomLineBorder + 0.2f));
+    }
+
+    void SkillCheck()
+    {
+        if (movingLineValue >= topPivotSlider || movingLineValue <= bottemPivotSlider)
+        {
+            velocity *= -1f;
+        }
+        if (lineIsMoving)
+        {
+            movingLineValue += velocity * Time.deltaTime;
+        }
+
+        skillCheckSlider.value = movingLineValue;
+
     }
     void UpdateTargetRangeVisual()
     {
-        // Map randomLineBorder (-1 to 1) to slider normalized range (0 to 1)
-        float normalizedStart = (randomLineBorder + 1f) / 2f;
-        float normalizedEnd = (randomLineBorder + 0.2f + 1f) / 2f;
+        float topPosition = randomActualPosition + (targetRangeImage.sizeDelta.y / 2) + 2;
+        float bottomPosition = randomActualPosition - (targetRangeImage.sizeDelta.y / 2) - 2;
+        
+        float sliderPosition = skillCheckSlider.value * barRange;
 
-        // Update the target range visual
-        targetRangeImage.anchorMin = new Vector2(normalizedStart, 0.5f);
-        targetRangeImage.anchorMax = new Vector2(normalizedEnd, 0.5f);
-        targetRangeImage.localScale = new Vector2(0.56f, 1);
-        targetRangeImage.anchoredPosition = Vector2.zero;
+        Debug.Log(sliderPosition <= topPosition && sliderPosition >= bottomPosition);
     }
 }
