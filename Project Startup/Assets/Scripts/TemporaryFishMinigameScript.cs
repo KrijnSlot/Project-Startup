@@ -13,7 +13,7 @@ public class TemporaryFishMinigameScript : MonoBehaviour
     [SerializeField] private RectTransform targetRangeImage;
     [Header("Speed")]
     [SerializeField] float velocity = 0.01f;
-    
+
     float randomPosition, allowedRange, clampedRange, parentHeight;
     private float movingLineValue, topPivotSlider, bottemPivotSlider, randomActualPosition, barRange;
     private bool lineIsMoving;
@@ -31,7 +31,7 @@ public class TemporaryFishMinigameScript : MonoBehaviour
         clampedRange = (parentHeight - targetRangeImage.sizeDelta.y) / 2;     //185 -20 / 2
         allowedRange = clampedRange / barRange;
 
-        randomPosition = Random.Range (-allowedRange, allowedRange);
+        randomPosition = Random.Range(-allowedRange, allowedRange);
         //randomPosition = allowedRange;
         // Debug.Log(range);
 
@@ -98,7 +98,7 @@ public class TemporaryFishMinigameScript : MonoBehaviour
     {
         float topPosition = randomActualPosition + (targetRangeImage.sizeDelta.y / 2) + 2;
         float bottomPosition = randomActualPosition - (targetRangeImage.sizeDelta.y / 2) - 2;
-        
+
         float sliderPosition = skillCheckSlider.value * barRange;
 
         Debug.Log(sliderPosition <= topPosition && sliderPosition >= bottomPosition);
