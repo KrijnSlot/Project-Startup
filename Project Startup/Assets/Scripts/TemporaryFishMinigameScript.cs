@@ -78,7 +78,7 @@ public class TemporaryFishMinigameScript : MonoBehaviour
 
             lineIsMoving = true;
             progress = 1;
-            SkillText.text = "press space";
+            //SkillText.text = "press space";
         }
         if (Input.GetKeyDown(KeyCode.U))
         {
