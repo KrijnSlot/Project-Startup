@@ -6,7 +6,7 @@ public class SharkScript : MonoBehaviour
 {
     public GameObject boat;
     public float sharkSpeed = 5f;
-    public LayerMask isBoat;
+    public LayerMask boatBitePoint;
 
     private bool inRange;
 
@@ -26,7 +26,7 @@ public class SharkScript : MonoBehaviour
     }
     void CheckBoatDistance()
     {
-        inRange = Physics.CheckSphere(transform.position, 1f, isBoat);
+        inRange = Physics.CheckSphere(transform.position, 1f, boatBitePoint);
         if (inRange) { Debug.Log("in range"); }
         else { Debug.Log("ah hell nah"); }
     }
@@ -41,11 +41,12 @@ public class SharkScript : MonoBehaviour
         }
         else
         {
-            transform.LookAt(boat.transform);
+
+/*            transform.LookAt(boat.transform);
             Vector3 xLock = transform.eulerAngles;
             xLock.x = 0f;
             transform.rotation = Quaternion.Euler(xLock);
-            rb.AddForce(directionToBoat * (-sharkSpeed / 40), ForceMode.Force);
+            rb.AddForce(directionToBoat * (-sharkSpeed / 40), ForceMode.Force);*/
         }
     }
 }
