@@ -8,7 +8,7 @@ public class FishMovementScript : MonoBehaviour
     //public float turnSpeed = 4.0f;
     Vector3 averageHeading;
     Vector3 averagePosition;
-    float neighborDistance = 3.0f;
+    [SerializeField]float neighborDistance = 3.0f;
 
     bool turning = false;
 
