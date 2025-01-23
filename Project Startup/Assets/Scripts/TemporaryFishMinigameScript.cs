@@ -8,19 +8,18 @@ using UnityEngine.UI;
 
 public class TemporaryFishMinigameScript : MonoBehaviour
 {
+    [Header("GameObjects")]
     [SerializeField] private Slider skillCheckSlider; // Reference to the UI Slider
+    [SerializeField] private Slider progressBar;
+    private float progress = 1;
+    [SerializeField] private float progressStep = 0.3f;
     [SerializeField] private RectTransform targetRangeImage;
-    private float movingLineValue, randomLineBorder, topPivotSlider, bottemPivotSlider;
-    private bool lineIsMoving, valueMovingUp;
+    [Header("Speed")]
     [SerializeField] float velocity = 0.01f;
-    float randomPosition;
-    float clampedRange;
-    float allowedRange;
-
-    //public float normalizedIndicatorPosition = 0;
-
-    private float randomActualPosition;
-    private float barRange;
+    
+    float randomPosition, allowedRange, clampedRange, parentHeight;
+    private float movingLineValue, topPivotSlider, bottemPivotSlider, randomActualPosition, barRange;
+    private bool lineIsMoving;
 
     void Start()
     {
@@ -29,9 +28,8 @@ public class TemporaryFishMinigameScript : MonoBehaviour
         /*Debug.Log("top pivot is: " + topPivotSlider + " and bottem pivot is: " + bottemPivotSlider);*/
 
         lineIsMoving = true;
-        valueMovingUp = true;
 
-        float parentHeight = ((RectTransform)transform).sizeDelta.x;
+        parentHeight = ((RectTransform)transform).sizeDelta.x;
         barRange = (parentHeight) / 2;                                             //185 / 2
         clampedRange = (parentHeight - targetRangeImage.sizeDelta.y) / 2;     //185 -20 / 2
         allowedRange = clampedRange / barRange;
@@ -55,19 +53,32 @@ public class TemporaryFishMinigameScript : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             lineIsMoving = false;
-            if (movingLineValue >= randomLineBorder && movingLineValue <= randomLineBorder + 0.2f)
+            /*if (movingLineValue >= randomLineBorder && movingLineValue <= randomLineBorder + 0.2f)
             {
-                Debug.Log("You did it!");
+                if (progress != -1)
+                {
+                    Debug.Log("You did it!");
+                    randomLineBorder = UnityEngine.Random.Range(-1f, 0.8f);
+                    lineIsMoving = true;
+                    progress -= progressStep;
+                } 
+                else
+                {
+                    SkillText.text = "you won";
+                }
+
             }
             else
             {
                 Debug.Log("You did not do it...");
-            }
+            }*/
         }
         if (Input.GetKeyDown(KeyCode.I))
         {
 
             lineIsMoving = true;
+            progress = 1;
+            SkillText.text = "press space";
         }
         if (Input.GetKeyDown(KeyCode.U))
         {
@@ -93,7 +104,7 @@ public class TemporaryFishMinigameScript : MonoBehaviour
         }
         if (lineIsMoving)
         {
-            movingLineValue += velocity;
+            movingLineValue += velocity * Time.deltaTime;
         }
 
         skillCheckSlider.value = movingLineValue;
@@ -107,5 +118,15 @@ public class TemporaryFishMinigameScript : MonoBehaviour
         float sliderPosition = skillCheckSlider.value * barRange;
 
         Debug.Log(sliderPosition <= topPosition && sliderPosition >= bottomPosition);
+    }
+
+    void UpdateProgress() 
+    { 
+        progressBar.value = progress;
+        if (progress == -1)
+        {
+            progress = 0;
+        }
+
     }
 }
