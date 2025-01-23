@@ -4,101 +4,91 @@ using UnityEngine;
 
 public class SharkScript : MonoBehaviour
 {
-    public GameObject boat;
-    public float sharkSpeed = 5f;
-    public LayerMask isBoat;
+    public GameObject boat; // Reference to the boat
+    public float sharkSpeed = 5f; // Shark movement speed
+    public LayerMask isBoat; // LayerMask to detect boat points
 
-    private bool inRange;
-    private bool animationPlaying;
-
-    [HideInInspector] public GameObject closesPoint;
-    public GameObject[] allBoatPoints;
-
-    Rigidbody rb;
-    Vector3 directionToBoat;
+    private bool inRange; // Check if shark is in range of a boat point
+    private Rigidbody rb;
+    private GameObject closestPoint; // Closest boat point
+    public GameObject[] allBoatPoints; // Array of all boat points
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        rb.useGravity = false;
+        rb.useGravity = false; // Disable gravity for the shark
     }
 
     void Update()
     {
-        closesPoint = FindClosestPoint();
-        MoveTowardBoat();
-        CheckBoatDistance();
-        Debug.Log(closesPoint);
+        closestPoint = FindClosestPoint(); // Find the closest boat point
+        MoveTowardBoat(); // Move toward the boat point
+        CheckBoatDistance(); // Check distance to the boat point
     }
 
     public GameObject FindClosestPoint()
     {
-        Debug.Log("findclosespoint");
-        GameObject[] allBoatPoints = GameObject.FindObjectsOfType<GameObject>();
-        GameObject closesPoint = null;
-        float shortestDistance = 1f; // Start with the maximum allowable distance
+        GameObject closestPoint = null;
+        float shortestDistance = Mathf.Infinity;
 
         foreach (GameObject point in allBoatPoints)
         {
-            Debug.Log(allBoatPoints);
-            if (point.layer == isBoat)
+            if ((isBoat.value & (1 << point.layer)) != 0) // Check if the point is on the isBoat layer
             {
-                Debug.Log("if");
-                // Calculate the distance between the bobber and the fish
                 float distance = Vector3.Distance(transform.position, point.transform.position);
-
                 if (distance < shortestDistance)
                 {
                     shortestDistance = distance;
-                    closesPoint = point;
+                    closestPoint = point;
                 }
             }
         }
 
-        if (closesPoint != null)
+        if (closestPoint != null)
         {
-            Debug.Log($"Closest point is {closesPoint.name} at distance {shortestDistance}");
+            Debug.Log($"Closest point is {closestPoint.name} at distance {shortestDistance}");
         }
         else
         {
             Debug.Log("No point within range.");
         }
 
-        return closesPoint;
+        return closestPoint;
     }
 
     void CheckBoatDistance()
     {
-        inRange = Physics.CheckSphere(transform.position, 1f, isBoat);
-        if (inRange) { Debug.Log("in range"); }
-        else { Debug.Log("ah hell nah"); }
+        if (closestPoint != null)
+        {
+            inRange = Vector3.Distance(transform.position, closestPoint.transform.position) <= 1f;
+            if (inRange) { Debug.Log("Shark is in range of the closest point."); }
+            else { Debug.Log("Shark is not in range."); }
+        }
     }
 
     void MoveTowardBoat()
     {
-        if (!inRange)
+        if (closestPoint != null)
         {
-            transform.LookAt(boat.transform);
-            directionToBoat = (boat.transform.position - transform.position).normalized;
-            rb.AddForce(directionToBoat * sharkSpeed, ForceMode.Force);
-        }
-        else
-        {
-            PlayAnimation();
-
-            /*            transform.LookAt(boat.transform);
-                        Vector3 xLock = transform.eulerAngles;
-                        xLock.x = 0f;
-                        transform.rotation = Quaternion.Euler(xLock);
-                        rb.AddForce(directionToBoat * (-sharkSpeed / 40), ForceMode.Force);*/
+            transform.LookAt(boat.transform.position);
+            if (!inRange)
+            {
+                // Move toward the closest point
+                Vector3 directionToPoint = (closestPoint.transform.position - transform.position).normalized;
+                rb.AddForce(directionToPoint * sharkSpeed, ForceMode.Force);
+            }
+            else
+            {
+                // Snap to the closest point
+                SnapToClosestPoint();
+            }
         }
     }
 
-    void PlayAnimation()
+    void SnapToClosestPoint()
     {
-        if (closesPoint != null)
-        {
-            transform.position = closesPoint.transform.position;
-        }
+        Debug.Log($"Snapping to closest point: {closestPoint.name}");
+        transform.position = closestPoint.transform.position;
+        rb.velocity = Vector3.zero; // Stop the shark's movement
     }
 }
