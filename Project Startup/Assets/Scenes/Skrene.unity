@@ -154,7 +154,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 112019346}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!43 &84653376
+--- !u!1 &112019340 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2392342742800771105, guid: 703d1d21c80aeec45bbfeac5d9b8cb13,
+    type: 3}
+  m_PrefabInstance: {fileID: 4843700077093567025}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &112019346 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2637577949660498363, guid: 703d1d21c80aeec45bbfeac5d9b8cb13,
+    type: 3}
+  m_PrefabInstance: {fileID: 4843700077093567025}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &112019347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 112019340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5af103f2e8509f64596e2af042ae454f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boat: {fileID: 221217876}
+  sharkSpeed: 5
+  boatBitePoint:
+    serializedVersion: 2
+    m_Bits: 256
+  closesPoint: {fileID: 0}
+  allBoatPoints: []
+--- !u!43 &177943380
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -319,35 +350,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!1 &112019340 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2392342742800771105, guid: 703d1d21c80aeec45bbfeac5d9b8cb13,
-    type: 3}
-  m_PrefabInstance: {fileID: 4843700077093567025}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &112019346 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2637577949660498363, guid: 703d1d21c80aeec45bbfeac5d9b8cb13,
-    type: 3}
-  m_PrefabInstance: {fileID: 4843700077093567025}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &112019347
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 112019340}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5af103f2e8509f64596e2af042ae454f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  boat: {fileID: 221217876}
-  sharkSpeed: 5
-  isBoat:
-    serializedVersion: 2
-    m_Bits: 256
 --- !u!1 &194236446
 GameObject:
   m_ObjectHideFlags: 0
@@ -407,7 +409,7 @@ GameObject:
   - component: {fileID: 221217879}
   - component: {fileID: 221217878}
   - component: {fileID: 221217877}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: boat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2897,7 +2899,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 84653376}
+      objectReference: {fileID: 177943380}
     - target: {fileID: 5772536610738685698, guid: 1905b475cc6cfce4eacd9d536f3e4cf0,
         type: 3}
       propertyPath: m_Enabled
