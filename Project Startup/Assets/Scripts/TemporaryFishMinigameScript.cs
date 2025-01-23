@@ -10,6 +10,9 @@ public class TemporaryFishMinigameScript : MonoBehaviour
 {
     [Header("GameObjects")]
     [SerializeField] private Slider skillCheckSlider; // Reference to the UI Slider
+    [SerializeField] private Slider progressBar;
+    private float progress = 1;
+    [SerializeField] private float progressStep = 0.3f;
     [SerializeField] private RectTransform targetRangeImage;
     [Header("Speed")]
     [SerializeField] float velocity = 0.01f;
@@ -52,7 +55,18 @@ public class TemporaryFishMinigameScript : MonoBehaviour
             lineIsMoving = false;
             /*if (movingLineValue >= randomLineBorder && movingLineValue <= randomLineBorder + 0.2f)
             {
-                Debug.Log("You did it!");
+                if (progress != -1)
+                {
+                    Debug.Log("You did it!");
+                    randomLineBorder = UnityEngine.Random.Range(-1f, 0.8f);
+                    lineIsMoving = true;
+                    progress -= progressStep;
+                } 
+                else
+                {
+                    SkillText.text = "you won";
+                }
+
             }
             else
             {
@@ -63,6 +77,8 @@ public class TemporaryFishMinigameScript : MonoBehaviour
         {
 
             lineIsMoving = true;
+            progress = 1;
+            SkillText.text = "press space";
         }
         if (Input.GetKeyDown(KeyCode.U))
         {
@@ -102,5 +118,15 @@ public class TemporaryFishMinigameScript : MonoBehaviour
         float sliderPosition = skillCheckSlider.value * barRange;
 
         Debug.Log(sliderPosition <= topPosition && sliderPosition >= bottomPosition);
+    }
+
+    void UpdateProgress() 
+    { 
+        progressBar.value = progress;
+        if (progress == -1)
+        {
+            progress = 0;
+        }
+
     }
 }
