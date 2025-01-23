@@ -999,6 +999,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillCheckSlider: {fileID: 1101654466}
   targetRangeImage: {fileID: 1976491686}
+  velocity: 1.5
 --- !u!1 &1300773848
 GameObject:
   m_ObjectHideFlags: 0
