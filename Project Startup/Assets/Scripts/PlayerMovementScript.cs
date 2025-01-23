@@ -5,8 +5,6 @@ using UnityEngine.EventSystems;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private CharacterController controller;
-
     [Header("Movement")]
     public float movingSpeed;
 
