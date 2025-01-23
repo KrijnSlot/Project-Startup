@@ -4,14 +4,19 @@ using UnityEngine;
 
 public class SharkScript : MonoBehaviour
 {
+    [SerializeField] private float attackCooldown = 5f; // Time to wait between attacks
+
     public GameObject boat; // Reference to the boat
     public float sharkSpeed = 5f; // Shark movement speed
     public LayerMask isBoat; // LayerMask to detect boat points
+    public Animator animator;
 
     private bool inRange; // Check if shark is in range of a boat point
     private Rigidbody rb;
     private GameObject closestPoint; // Closest boat point
     public GameObject[] allBoatPoints; // Array of all boat points
+
+    private bool canAttack = true;
 
     void Start()
     {
@@ -44,14 +49,14 @@ public class SharkScript : MonoBehaviour
             }
         }
 
-        if (closestPoint != null)
-        {
-            Debug.Log($"Closest point is {closestPoint.name} at distance {shortestDistance}");
-        }
-        else
-        {
-            Debug.Log("No point within range.");
-        }
+        /*        if (closestPoint != null)
+                {
+                    Debug.Log($"Closest point is {closestPoint.name} at distance {shortestDistance}");
+                }
+                else
+                {
+                    Debug.Log("No point within range.");
+                }*/
 
         return closestPoint;
     }
@@ -61,8 +66,6 @@ public class SharkScript : MonoBehaviour
         if (closestPoint != null)
         {
             inRange = Vector3.Distance(transform.position, closestPoint.transform.position) <= 1f;
-            if (inRange) { Debug.Log("Shark is in range of the closest point."); }
-            else { Debug.Log("Shark is not in range."); }
         }
     }
 
@@ -84,11 +87,35 @@ public class SharkScript : MonoBehaviour
             }
         }
     }
-
     void SnapToClosestPoint()
     {
-        Debug.Log($"Snapping to closest point: {closestPoint.name}");
         transform.position = closestPoint.transform.position;
-        rb.velocity = Vector3.zero; // Stop the shark's movement
+        transform.rotation = closestPoint.transform.rotation;
+
+        if (canAttack)
+        {
+            canAttack = false; // Prevent further attacks during cooldown
+            animator.SetTrigger("Attack");
+
+
+            // Do damage to the boat down here
+
+
+
+            // Start the cooldown coroutine
+            StartCoroutine(AttackCooldown());
+        }
+        else
+        {
+            Debug.Log("Attack on cooldown.");
+        }
+    }
+
+    IEnumerator AttackCooldown()
+    {
+        Debug.Log("Attack started cooldown.");
+        yield return new WaitForSeconds(attackCooldown);
+        Debug.Log("Attack ready again.");
+        canAttack = true; // Reset attack availability
     }
 }

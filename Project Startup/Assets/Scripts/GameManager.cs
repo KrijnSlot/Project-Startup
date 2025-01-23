@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log("money: " + money);
+        //Debug.Log("money: " + money);
     }
 
     public static void RandomAddMoney(int min, int max)
