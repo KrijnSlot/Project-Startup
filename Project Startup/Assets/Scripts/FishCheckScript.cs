@@ -50,4 +50,17 @@ public class FishCheckScript : MonoBehaviour
 
         return closestFish;
     }
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("FishingArea"))
+        {
+            Rigidbody bobberRb = this.GetComponent<Rigidbody>();
+
+            // Lock movement on the x and z axes by applying constraints.
+            bobberRb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+
+            Debug.Log("Bobber entered the FishingArea and x/z axes are locked.");
+        }
+    }
+
 }
