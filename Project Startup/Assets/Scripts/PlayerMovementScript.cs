@@ -24,9 +24,13 @@ public class PlayerMovement : MonoBehaviour
 
     Rigidbody rb;
 
+    InputEvents inputEvents => InputEvents.instance;
+
     // Start is called before the first frame update
     void Start()
     {
+        inputEvents.walkAction += MyInput;
+        inputEvents.walkAction += (Vector2 juan) => { Debug.Log("Walk"+juan); };
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
     }
@@ -35,16 +39,10 @@ public class PlayerMovement : MonoBehaviour
     {
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, Ground);
 
-        MyInput();
-
         if (grounded)
-        {
             rb.drag = groundDrag;
-        }
         else
-        {
-            rb.drag = 0;
-        }
+            rb.drag = groundDrag; // grounded is not being used yet so for now this
     }
 
     private void FixedUpdate()
@@ -52,10 +50,10 @@ public class PlayerMovement : MonoBehaviour
         MovePlayer();
     }
 
-    private void MyInput()
+    private void MyInput(Vector2 input)
     {
-        horizontalInput = Input.GetAxisRaw("Horizontal");
-        verticalInput = Input.GetAxisRaw("Vertical");
+        horizontalInput = input.x;
+        verticalInput = input.y;
     }
 
     private void MovePlayer()

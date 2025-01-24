@@ -12,14 +12,20 @@ public class TemporaryFishMinigameScript : MonoBehaviour
     [SerializeField] private Slider skillCheckSlider; // Reference to the UI Slider
     [SerializeField] private RectTransform targetRangeImage;
     [Header("Speed")]
-    [SerializeField] float velocity = 0.01f;
+    [SerializeField] float velocity = 1.2f;
+    [Header("Progress Bar")]
+    [SerializeField] private Slider progressSlider;
+    [SerializeField] private float progressSliderVelocity = -2.5f;
 
     float randomPosition, allowedRange, clampedRange, parentHeight;
-    private float movingLineValue, topPivotSlider, bottemPivotSlider, randomActualPosition, barRange;
+    private float movingLineValue, topPivotSlider, bottemPivotSlider, randomActualPosition, barRange, topPosition, bottomPosition, sliderPosition;
     private bool lineIsMoving;
+
+    InputEvents inputEvents => InputEvents.instance;
 
     void Start()
     {
+        inputEvents.skillCheckAction += SkillCheckActions;
         topPivotSlider = skillCheckSlider.maxValue;
         bottemPivotSlider = skillCheckSlider.minValue;
         /*Debug.Log("top pivot is: " + topPivotSlider + " and bottem pivot is: " + bottemPivotSlider);*/
@@ -47,23 +53,9 @@ public class TemporaryFishMinigameScript : MonoBehaviour
         UpdateTargetRangeVisual();
         SkillCheck();
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            lineIsMoving = false;
-            /*if (movingLineValue >= randomLineBorder && movingLineValue <= randomLineBorder + 0.2f)
-            {
-                Debug.Log("You did it!");
-            }
-            else
-            {
-                Debug.Log("You did not do it...");
-            }*/
-        }
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-
+        if (Input.GetKeyDown(KeyCode.I)) // these 2 inputs are for testing and will not be used for the final game
             lineIsMoving = true;
-        }
+
         if (Input.GetKeyDown(KeyCode.U))
         {
             randomPosition = Random.Range(-allowedRange, allowedRange);
@@ -75,31 +67,41 @@ public class TemporaryFishMinigameScript : MonoBehaviour
 
             lineIsMoving = true;
         }
-
-        //Debug.Log("The line is at: " + movingLineValue);
-        //Debug.Log("The border is in between: " + randomLineBorder + " and: " + (randomLineBorder + 0.2f));
     }
 
     void SkillCheck()
     {
-        if (movingLineValue >= topPivotSlider || movingLineValue <= bottemPivotSlider)
-        {
+        if (movingLineValue >= topPivotSlider || movingLineValue <= bottemPivotSlider) // makes the slider move up and down
             velocity *= -1f;
-        }
+
         if (lineIsMoving)
+            movingLineValue += velocity * Time.deltaTime; // frame independant
+
+        if (progressSlider.value >= progressSlider.maxValue)
         {
-            movingLineValue += velocity * Time.deltaTime;
+            Debug.Log("You caught a fish!"); // turn off the background and catch the fish here
+            progressSliderVelocity = 0;
         }
 
         skillCheckSlider.value = movingLineValue;
-
+        progressSlider.value += progressSliderVelocity * Time.deltaTime;
     }
+
+    private void SkillCheckActions()
+    {
+        lineIsMoving = false;
+        if (sliderPosition <= topPosition && sliderPosition >= bottomPosition)
+            progressSlider.value += 10f;
+        else
+            progressSlider.value -= 5f;
+    }
+
     void UpdateTargetRangeVisual()
     {
-        float topPosition = randomActualPosition + (targetRangeImage.sizeDelta.y / 2) + 2;
-        float bottomPosition = randomActualPosition - (targetRangeImage.sizeDelta.y / 2) - 2;
+        topPosition = randomActualPosition + (targetRangeImage.sizeDelta.y / 2) + 2;
+        bottomPosition = randomActualPosition - (targetRangeImage.sizeDelta.y / 2) - 2;
 
-        float sliderPosition = skillCheckSlider.value * barRange;
+        sliderPosition = skillCheckSlider.value * barRange;
 
         Debug.Log(sliderPosition <= topPosition && sliderPosition >= bottomPosition);
     }

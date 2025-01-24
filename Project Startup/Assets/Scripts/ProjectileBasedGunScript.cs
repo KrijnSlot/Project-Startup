@@ -15,24 +15,29 @@ public class ProjectileBasedGunScript : MonoBehaviour
     public float bulletVelocity = 30;
     public float bulletPrefabLifeTime = 3f;
 
+    private bool canShoot;
+
+    InputEvents inputEvents => InputEvents.instance;
+
 
     // Start is called before the first frame update
     void Start()
     {
+        canShoot = true;
 
+        inputEvents.triggerAction += FireWeapon;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            FireWeapon();
-        }
+        Debug.Log(canShoot);
     }
 
     private void FireWeapon()
     {
+        if (!canShoot)
+            return;
         Gunshot.Play();
 
         GameObject bullet = Instantiate(bulletPrefab, bulletSpawn.position, Quaternion.identity);
@@ -41,11 +46,13 @@ public class ProjectileBasedGunScript : MonoBehaviour
         bullet.transform.rotation = bulletSpawn.rotation;
 
         Destroy(bullet, bulletPrefabLifeTime);
+        canShoot = false;
+        StartCoroutine(fireRate());
     }
 
-    private IEnumerator DestroyBulletAfterTime(GameObject bullet, float delay)
+    private IEnumerator fireRate()
     {
-        yield return new WaitForSeconds(delay);
-        Destroy(bullet);
+        yield return new WaitForSeconds(0.25f);
+        canShoot = true;
     }
 }
