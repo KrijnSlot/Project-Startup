@@ -17,6 +17,7 @@ public class SharkScript : MonoBehaviour
     public GameObject[] allBoatPoints; // Array of all boat points
 
     private bool canAttack = true;
+    private PointScript currentPointScript; // The PointScript of the currently occupied point
 
     void Start()
     {
@@ -26,12 +27,23 @@ public class SharkScript : MonoBehaviour
 
     void Update()
     {
-        closestPoint = FindClosestPoint(); // Find the closest boat point
+        // If no point is currently occupied, find the closest available point
+        if (currentPointScript == null || !currentPointScript.isOccupied)
+        {
+            closestPoint = FindClosestAvailablePoint();
+        }
+
         MoveTowardBoat(); // Move toward the boat point
         CheckBoatDistance(); // Check distance to the boat point
+
+        // Continuously update position if occupying a point
+        if (currentPointScript != null && currentPointScript.isOccupied)
+        {
+            MaintainPositionAtPoint();
+        }
     }
 
-    public GameObject FindClosestPoint()
+    public GameObject FindClosestAvailablePoint()
     {
         GameObject closestPoint = null;
         float shortestDistance = Mathf.Infinity;
@@ -40,23 +52,18 @@ public class SharkScript : MonoBehaviour
         {
             if ((isBoat.value & (1 << point.layer)) != 0) // Check if the point is on the isBoat layer
             {
-                float distance = Vector3.Distance(transform.position, point.transform.position);
-                if (distance < shortestDistance)
+                PointScript pointScript = point.GetComponent<PointScript>();
+                if (pointScript != null && !pointScript.isOccupied) // Ensure the point is not occupied
                 {
-                    shortestDistance = distance;
-                    closestPoint = point;
+                    float distance = Vector3.Distance(transform.position, point.transform.position);
+                    if (distance < shortestDistance)
+                    {
+                        shortestDistance = distance;
+                        closestPoint = point;
+                    }
                 }
             }
         }
-
-        /*        if (closestPoint != null)
-                {
-                    Debug.Log($"Closest point is {closestPoint.name} at distance {shortestDistance}");
-                }
-                else
-                {
-                    Debug.Log("No point within range.");
-                }*/
 
         return closestPoint;
     }
@@ -87,35 +94,68 @@ public class SharkScript : MonoBehaviour
             }
         }
     }
+
     void SnapToClosestPoint()
     {
-        transform.position = closestPoint.transform.position;
-        transform.rotation = closestPoint.transform.rotation;
-
-        if (canAttack)
+        PointScript pointScript = closestPoint.GetComponent<PointScript>();
+        if (pointScript != null && !pointScript.isOccupied)
         {
-            canAttack = false; // Prevent further attacks during cooldown
-            animator.SetTrigger("Attack");
+            // Occupy the point
+            pointScript.isOccupied = true;
+            currentPointScript = pointScript; // Assign the current point script
 
+            transform.position = closestPoint.transform.position;
+            transform.rotation = closestPoint.transform.rotation;
 
-            // Do damage to the boat down here
+            if (canAttack)
+            {
+                canAttack = false; // Prevent further attacks during cooldown
+                animator.SetTrigger("Attack");
 
+                // Do damage to the boat down here
 
-
-            // Start the cooldown coroutine
-            StartCoroutine(AttackCooldown());
-        }
-        else
-        {
-            Debug.Log("Attack on cooldown.");
+                // Start the cooldown coroutine
+                StartCoroutine(AttackCooldown(pointScript));
+            }
+            else
+            {
+                Debug.Log("Attack on cooldown.");
+            }
         }
     }
 
-    IEnumerator AttackCooldown()
+    void MaintainPositionAtPoint()
+    {
+        if (currentPointScript != null)
+        {
+            // Continuously maintain the shark's position and rotation at the occupied point
+            transform.position = closestPoint.transform.position;
+            transform.rotation = closestPoint.transform.rotation;
+        }
+    }
+
+    IEnumerator AttackCooldown(PointScript pointScript)
     {
         Debug.Log("Attack started cooldown.");
         yield return new WaitForSeconds(attackCooldown);
+
         Debug.Log("Attack ready again.");
         canAttack = true; // Reset attack availability
+
+        // Release the point after cooldown
+        if (pointScript != null)
+        {
+            pointScript.isOccupied = false;
+            currentPointScript = null; // Clear the current point script reference
+        }
+    }
+
+    private void OnDestroy()
+    {
+        // If the shark is destroyed, release the currently occupied point
+        if (currentPointScript != null)
+        {
+            currentPointScript.isOccupied = false;
+        }
     }
 }
