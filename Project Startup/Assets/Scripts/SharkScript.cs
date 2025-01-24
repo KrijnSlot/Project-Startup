@@ -4,101 +4,158 @@ using UnityEngine;
 
 public class SharkScript : MonoBehaviour
 {
-    public GameObject boat;
-    public float sharkSpeed = 5f;
-    public LayerMask isBoat;
+    [SerializeField] private float attackCooldown = 5f; // Time to wait between attacks
 
-    private bool inRange;
-    private bool animationPlaying;
+    public GameObject boat; // Reference to the boat
+    public float sharkSpeed = 5f; // Shark movement speed
+    public LayerMask isBoat; // LayerMask to detect boat points
+    public Animator animator;
 
-    [HideInInspector] public GameObject closesPoint;
-    public GameObject[] allBoatPoints;
+    private bool inRange; // Check if shark is in range of a boat point
+    private Rigidbody rb;
+    private GameObject closestPoint; // Closest boat point
+    public GameObject[] allBoatPoints; // Array of all boat points
 
-    Rigidbody rb;
-    Vector3 directionToBoat;
+    private bool canAttack = true;
+    private PointScript currentPointScript; // The PointScript of the currently occupied point
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        rb.useGravity = false;
+        rb.useGravity = false; // Disable gravity for the shark
     }
 
     void Update()
     {
-        closesPoint = FindClosestPoint();
-        MoveTowardBoat();
-        CheckBoatDistance();
-        Debug.Log(closesPoint);
+        // If no point is currently occupied, find the closest available point
+        if (currentPointScript == null || !currentPointScript.isOccupied)
+        {
+            closestPoint = FindClosestAvailablePoint();
+        }
+
+        MoveTowardBoat(); // Move toward the boat point
+        CheckBoatDistance(); // Check distance to the boat point
+
+        // Continuously update position if occupying a point
+        if (currentPointScript != null && currentPointScript.isOccupied)
+        {
+            MaintainPositionAtPoint();
+        }
     }
 
-    public GameObject FindClosestPoint()
+    public GameObject FindClosestAvailablePoint()
     {
-        Debug.Log("findclosespoint");
-        GameObject[] allBoatPoints = GameObject.FindObjectsOfType<GameObject>();
-        GameObject closesPoint = null;
-        float shortestDistance = 1f; // Start with the maximum allowable distance
+        GameObject closestPoint = null;
+        float shortestDistance = Mathf.Infinity;
 
         foreach (GameObject point in allBoatPoints)
         {
-            Debug.Log(allBoatPoints);
-            if (point.layer == isBoat)
+            if ((isBoat.value & (1 << point.layer)) != 0) // Check if the point is on the isBoat layer
             {
-                Debug.Log("if");
-                // Calculate the distance between the bobber and the fish
-                float distance = Vector3.Distance(transform.position, point.transform.position);
-
-                if (distance < shortestDistance)
+                PointScript pointScript = point.GetComponent<PointScript>();
+                if (pointScript != null && !pointScript.isOccupied) // Ensure the point is not occupied
                 {
-                    shortestDistance = distance;
-                    closesPoint = point;
+                    float distance = Vector3.Distance(transform.position, point.transform.position);
+                    if (distance < shortestDistance)
+                    {
+                        shortestDistance = distance;
+                        closestPoint = point;
+                    }
                 }
             }
         }
 
-        if (closesPoint != null)
-        {
-            Debug.Log($"Closest point is {closesPoint.name} at distance {shortestDistance}");
-        }
-        else
-        {
-            Debug.Log("No point within range.");
-        }
-
-        return closesPoint;
+        return closestPoint;
     }
 
     void CheckBoatDistance()
     {
-        inRange = Physics.CheckSphere(transform.position, 1f, isBoat);
-        if (inRange) { Debug.Log("in range"); }
-        else { Debug.Log("ah hell nah"); }
+        if (closestPoint != null)
+        {
+            inRange = Vector3.Distance(transform.position, closestPoint.transform.position) <= 1f;
+        }
     }
 
     void MoveTowardBoat()
     {
-        if (!inRange)
+        if (closestPoint != null)
         {
-            transform.LookAt(boat.transform);
-            directionToBoat = (boat.transform.position - transform.position).normalized;
-            rb.AddForce(directionToBoat * sharkSpeed, ForceMode.Force);
-        }
-        else
-        {
-            PlayAnimation();
-
-            /*            transform.LookAt(boat.transform);
-                        Vector3 xLock = transform.eulerAngles;
-                        xLock.x = 0f;
-                        transform.rotation = Quaternion.Euler(xLock);
-                        rb.AddForce(directionToBoat * (-sharkSpeed / 40), ForceMode.Force);*/
+            transform.LookAt(boat.transform.position);
+            if (!inRange)
+            {
+                // Move toward the closest point
+                Vector3 directionToPoint = (closestPoint.transform.position - transform.position).normalized;
+                rb.AddForce(directionToPoint * sharkSpeed, ForceMode.Force);
+            }
+            else
+            {
+                // Snap to the closest point
+                SnapToClosestPoint();
+            }
         }
     }
 
-    void PlayAnimation()
+    void SnapToClosestPoint()
     {
-        if (closesPoint != null)
+        PointScript pointScript = closestPoint.GetComponent<PointScript>();
+        if (pointScript != null && !pointScript.isOccupied)
         {
-            transform.position = closesPoint.transform.position;
+            // Occupy the point
+            pointScript.isOccupied = true;
+            currentPointScript = pointScript; // Assign the current point script
+
+            transform.position = closestPoint.transform.position;
+            transform.rotation = closestPoint.transform.rotation;
+
+            if (canAttack)
+            {
+                canAttack = false; // Prevent further attacks during cooldown
+                animator.SetTrigger("Attack");
+
+                // Do damage to the boat down here
+
+                // Start the cooldown coroutine
+                StartCoroutine(AttackCooldown(pointScript));
+            }
+            else
+            {
+                Debug.Log("Attack on cooldown.");
+            }
+        }
+    }
+
+    void MaintainPositionAtPoint()
+    {
+        if (currentPointScript != null)
+        {
+            // Continuously maintain the shark's position and rotation at the occupied point
+            transform.position = closestPoint.transform.position;
+            transform.rotation = closestPoint.transform.rotation;
+        }
+    }
+
+    IEnumerator AttackCooldown(PointScript pointScript)
+    {
+        Debug.Log("Attack started cooldown.");
+        yield return new WaitForSeconds(attackCooldown);
+
+        Debug.Log("Attack ready again.");
+        canAttack = true; // Reset attack availability
+
+        // Release the point after cooldown
+        if (pointScript != null)
+        {
+            pointScript.isOccupied = false;
+            currentPointScript = null; // Clear the current point script reference
+        }
+    }
+
+    private void OnDestroy()
+    {
+        // If the shark is destroyed, release the currently occupied point
+        if (currentPointScript != null)
+        {
+            currentPointScript.isOccupied = false;
         }
     }
 }
