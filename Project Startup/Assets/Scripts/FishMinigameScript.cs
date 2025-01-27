@@ -6,9 +6,18 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 
-public class TemporaryFishMinigameScript : MonoBehaviour
+public class FishMinigameScript : MonoBehaviour
 {
+    /// <summary>
+    /// 
+    /// WE NEED TO MAKE THE UI SHOW WHEN YOU START FISHING SINCE ITS NOT IMPLEMENTED YET
+    /// 
+    /// </summary>
+
+
+    public static FishMinigameScript instance;
     [Header("GameObjects")]
+    //[SerializeField] public GameObject skillCheckUI;
     [SerializeField] private Slider skillCheckSlider; // Reference to the UI Slider
     [SerializeField] private RectTransform targetRangeImage;
     [Header("Speed")]
@@ -19,9 +28,14 @@ public class TemporaryFishMinigameScript : MonoBehaviour
 
     float randomPosition, allowedRange, clampedRange, parentHeight;
     private float movingLineValue, topPivotSlider, bottemPivotSlider, randomActualPosition, barRange, topPosition, bottomPosition, sliderPosition;
-    private bool lineIsMoving;
+    private bool lineIsMoving, pressCooldown;
 
     InputEvents inputEvents => InputEvents.instance;
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     void Start()
     {
@@ -31,18 +45,14 @@ public class TemporaryFishMinigameScript : MonoBehaviour
         /*Debug.Log("top pivot is: " + topPivotSlider + " and bottem pivot is: " + bottemPivotSlider);*/
 
         lineIsMoving = true;
+        pressCooldown = true;
 
         parentHeight = ((RectTransform)transform).sizeDelta.x;
         barRange = (parentHeight) / 2;                                             //185 / 2
         clampedRange = (parentHeight - targetRangeImage.sizeDelta.y) / 2;     //185 -20 / 2
         allowedRange = clampedRange / barRange;
 
-        randomPosition = Random.Range(-allowedRange, allowedRange);
-        //randomPosition = allowedRange;
-        // Debug.Log(range);
-
-        randomActualPosition = randomPosition * barRange;
-        targetRangeImage.anchoredPosition = new Vector2(randomActualPosition, 0);
+        RandomizeTargetPos();
 
 
     }
@@ -58,12 +68,9 @@ public class TemporaryFishMinigameScript : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.U))
         {
-            randomPosition = Random.Range(-allowedRange, allowedRange);
+            RandomizeTargetPos();
             //randomPosition = allowedRange;
             // Debug.Log(range);
-
-            randomActualPosition = randomPosition * barRange;
-            targetRangeImage.anchoredPosition = new Vector2(randomActualPosition, 0);
 
             lineIsMoving = true;
         }
@@ -71,29 +78,57 @@ public class TemporaryFishMinigameScript : MonoBehaviour
 
     void SkillCheck()
     {
-        if (movingLineValue >= topPivotSlider || movingLineValue <= bottemPivotSlider) // makes the slider move up and down
-            velocity *= -1f;
-
-        if (lineIsMoving)
-            movingLineValue += velocity * Time.deltaTime; // frame independant
-
-        if (progressSlider.value >= progressSlider.maxValue)
+        if (this.gameObject == !false)
         {
-            Debug.Log("You caught a fish!"); // turn off the background and catch the fish here
-            progressSliderVelocity = 0;
+
+            if (movingLineValue >= topPivotSlider || movingLineValue <= bottemPivotSlider) // makes the slider move up and down
+                velocity *= -1f;
+
+            if (lineIsMoving)
+                movingLineValue += velocity * Time.deltaTime; // frame independant
+
+            if (progressSlider.value >= progressSlider.maxValue)
+            {
+                Debug.Log("You caught a fish!"); // turn off the background and catch the fish here
+                progressSlider.value = 0f;
+                // gotta make up a way to remove the entire thing
+                this.gameObject.SetActive(false); 
+            }
         }
 
         skillCheckSlider.value = movingLineValue;
-        progressSlider.value += progressSliderVelocity * Time.deltaTime;
+        progressSlider.value += progressSliderVelocity * Time.deltaTime; // frame independent
     }
 
     private void SkillCheckActions()
     {
-        lineIsMoving = false;
+        if (!pressCooldown)
+            return;
+
+        pressCooldown = false;
+        RandomizeTargetPos();
+
         if (sliderPosition <= topPosition && sliderPosition >= bottomPosition)
             progressSlider.value += 10f;
         else
             progressSlider.value -= 5f;
+        StartCoroutine(CooldownSkillcheck(0.2f));
+    }
+
+    private void RandomizeTargetPos()
+    {
+        randomPosition = Random.Range(-allowedRange, allowedRange);
+        //randomPosition = allowedRange;
+        // Debug.Log(range);
+
+        randomActualPosition = randomPosition * barRange;
+        targetRangeImage.anchoredPosition = new Vector2(randomActualPosition, 0);
+    }
+
+    private IEnumerator CooldownSkillcheck(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        pressCooldown = true;
     }
 
     void UpdateTargetRangeVisual()

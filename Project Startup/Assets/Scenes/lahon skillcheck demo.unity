@@ -854,6 +854,7 @@ GameObject:
   - component: {fileID: 981124307}
   - component: {fileID: 981124306}
   - component: {fileID: 981124310}
+  - component: {fileID: 981124311}
   m_Layer: 0
   m_Name: PlayerCapsule
   m_TagString: Untagged
@@ -1006,6 +1007,26 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 744591641}
+--- !u!114 &981124311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 981124305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2405e5c8b1f6e9f40ad601517c48cda4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillCheckUI: {fileID: 776502441}
+  movingSpeed: 0
+  groundDrag: 0
+  playerHeight: 0
+  Ground:
+    serializedVersion: 2
+    m_Bits: 0
+  orientation: {fileID: 1053969558}
 --- !u!1 &1053969557
 GameObject:
   m_ObjectHideFlags: 0

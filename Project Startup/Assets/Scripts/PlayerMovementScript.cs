@@ -5,6 +5,9 @@ using UnityEngine.EventSystems;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [Header("UI")]
+    public GameObject skillCheckUI; // temporarily here for check
+
     [Header("Movement")]
     public float movingSpeed;
 
@@ -16,6 +19,8 @@ public class PlayerMovement : MonoBehaviour
     bool grounded;
 
     public Transform orientation;
+
+    //public FishMinigameScript fishMinigameScript;
 
     float horizontalInput;
     float verticalInput;
@@ -30,7 +35,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         inputEvents.walkAction += MyInput;
-        inputEvents.walkAction += (Vector2 juan) => { Debug.Log("Walk"+juan); };
+        inputEvents.walkAction += (Vector2 juan) => { Debug.Log("Walk" + juan); };
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
     }
@@ -43,6 +48,11 @@ public class PlayerMovement : MonoBehaviour
             rb.drag = groundDrag;
         else
             rb.drag = groundDrag; // grounded is not being used yet so for now this
+
+        if (Input.GetKeyDown(KeyCode.V))
+            skillCheckUI.SetActive(true);
+        if (Input.GetKeyDown(KeyCode.B))
+            skillCheckUI.SetActive(false);
     }
 
     private void FixedUpdate()
@@ -62,4 +72,4 @@ public class PlayerMovement : MonoBehaviour
 
         rb.AddForce(movingDirection.normalized * movingSpeed * 10f, ForceMode.Force);
     }
-}   
+}

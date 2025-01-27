@@ -47,12 +47,12 @@ public class ProjectileBasedGunScript : MonoBehaviour
 
         Destroy(bullet, bulletPrefabLifeTime);
         canShoot = false;
-        StartCoroutine(fireRate());
+        StartCoroutine(fireRate(0.25f));
     }
 
-    private IEnumerator fireRate()
+    private IEnumerator fireRate(float delay)
     {
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(delay);
         canShoot = true;
     }
 }

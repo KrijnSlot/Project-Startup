@@ -5,6 +5,7 @@ public class FishingRod : MonoBehaviour
 {
     public PickUpScript mainCamPickUpScript;
     public FishCheckScript bobberFishCheckScript;
+    //public FishMinigameScript fishMinigame;
 
     public bool isEquipped;
 
@@ -186,11 +187,12 @@ public class FishingRod : MonoBehaviour
         {
             gameManager.RandomAddMoney(10, 100);
             bool miniGameDone = false;
+            //fishMinigame.skillCheckUI.gameObject.SetActive(true);
             // ---- > Start Minigame Logic
             if (miniGameDone)
             {
                 fishCaught = false;
-
+                //fishMinigame.skillCheckUI.gameObject.SetActive(false);
             }
         }
 
