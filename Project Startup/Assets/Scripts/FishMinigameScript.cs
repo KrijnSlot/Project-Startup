@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
@@ -49,7 +50,7 @@ public class FishMinigameScript : MonoBehaviour
         /*Debug.Log("top pivot is: " + topPivotSlider + " and bottem pivot is: " + bottemPivotSlider);*/
 
         lineIsMoving = true;
-        pressCooldown = true;
+        pressCooldown = false;
 
         parentHeight = ((RectTransform)transform).sizeDelta.x;
         barRange = (parentHeight) / 2;                                             //185 / 2
@@ -96,7 +97,7 @@ public class FishMinigameScript : MonoBehaviour
 
             if (progressSlider.value >= progressSlider.maxValue)
             {
-                pressCooldown = true;
+                pressCooldown = false;
                 Debug.Log("You caught a fish!"); // turn off the background and catch the fish here
                 progressSlider.value = 0f;
                 // gotta make up a way to remove the entire thing
@@ -112,11 +113,11 @@ public class FishMinigameScript : MonoBehaviour
     {
         if (skillCheckUI.activeSelf == false)
             return;
-        pressCooldown = true;
-        if (!pressCooldown)  // logic should be turned around caus wtf bro
+        if (pressCooldown)
             return;
+        
+        pressCooldown = true;
 
-        pressCooldown = false;
         RandomizeTargetPos();
 
         if (sliderPosition <= topPosition && sliderPosition >= bottomPosition)
@@ -139,7 +140,7 @@ public class FishMinigameScript : MonoBehaviour
     private IEnumerator CooldownSkillcheck(float delay)
     {
         yield return new WaitForSeconds(delay);
-        pressCooldown = true;
+        pressCooldown = false;
     }
 
     void UpdateTargetRangeVisual()

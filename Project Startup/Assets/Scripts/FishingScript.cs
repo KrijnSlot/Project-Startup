@@ -29,7 +29,7 @@ public class FishingRod : MonoBehaviour
     public Transform castPoint; // Point where the bobber will be launched from (e.g., player's hand or rod tip).
     public float castForce = 15f;
 
-    Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
+    Ray ray;
 
     InputEvents inputEvents => InputEvents.instance;
 
@@ -37,6 +37,7 @@ public class FishingRod : MonoBehaviour
 
     private void Start()
     {
+        ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
         canClick = true;
         inputEvents.fishingAction += MyInputs;
 
@@ -72,6 +73,8 @@ public class FishingRod : MonoBehaviour
             StartCoroutine(ClickCooldown(0.2f));
             return;
         }
+        Debug.Log("is equipped: " + isEquipped);
+
 
         if (isEquipped)
         {
