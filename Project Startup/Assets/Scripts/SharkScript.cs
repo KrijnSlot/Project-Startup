@@ -11,6 +11,8 @@ public class SharkScript : MonoBehaviour
     public LayerMask isBoat; // LayerMask to detect boat points
     public Animator animator;
 
+    public int sharkHP = Random.Range(10, 15);
+
     private bool inRange; // Check if shark is in range of a boat point
     private Rigidbody rb;
     private GameObject closestPoint; // Closest boat point
@@ -23,6 +25,14 @@ public class SharkScript : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rb.useGravity = false; // Disable gravity for the shark
+
+        // Find all boat points at runtime
+        allBoatPoints = GameObject.FindGameObjectsWithTag("BoatPoint");
+
+        if (allBoatPoints.Length == 0)
+        {
+            Debug.LogWarning("No boat points found! Make sure boat points are tagged as 'BoatPoint'.");
+        }
     }
 
     void Update()
@@ -148,6 +158,11 @@ public class SharkScript : MonoBehaviour
             pointScript.isOccupied = false;
             currentPointScript = null; // Clear the current point script reference
         }
+    }
+
+    public void SharkHit(int damage)
+    {
+
     }
 
     private void OnDestroy()
