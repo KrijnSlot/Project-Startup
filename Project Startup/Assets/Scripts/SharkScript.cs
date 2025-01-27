@@ -20,6 +20,7 @@ public class SharkScript : MonoBehaviour
 
     private bool canAttack = true;
     private PointScript currentPointScript; // The PointScript of the currently occupied point
+    public SharkSpawningScript spawningScript;
 
     void Start()
     {
@@ -162,8 +163,18 @@ public class SharkScript : MonoBehaviour
 
     public void SharkHit(int damage)
     {
+        sharkHP -= damage;
 
+        if (sharkHP <= 0)
+        {
+            // Remove this shark from the sharks list
+            spawningScript.sharks.Remove();
+
+            // Destroy the shark game object
+            Destroy(gameObject);
+        }
     }
+
 
     private void OnDestroy()
     {
