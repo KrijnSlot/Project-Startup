@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
         money = 0;
         Debug.Log(intValue.value);
     }
-
+    
     private void Update()
     {
         intValue.value -= 1;

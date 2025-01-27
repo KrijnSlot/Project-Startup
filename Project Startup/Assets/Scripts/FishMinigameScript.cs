@@ -17,7 +17,7 @@ public class FishMinigameScript : MonoBehaviour
 
     public static FishMinigameScript instance;
     [Header("GameObjects")]
-    //[SerializeField] public GameObject skillCheckUI;
+    [SerializeField] public GameObject skillCheckUI;
     [SerializeField] private Slider skillCheckSlider; // Reference to the UI Slider
     [SerializeField] private RectTransform targetRangeImage;
     [Header("Speed")]
@@ -25,6 +25,7 @@ public class FishMinigameScript : MonoBehaviour
     [Header("Progress Bar")]
     [SerializeField] private Slider progressSlider;
     [SerializeField] private float progressSliderVelocity = -2.5f;
+    [SerializeField] public bool skillcheckIsDone = false;
 
     float randomPosition, allowedRange, clampedRange, parentHeight;
     private float movingLineValue, topPivotSlider, bottemPivotSlider, randomActualPosition, barRange, topPosition, bottomPosition, sliderPosition;
@@ -32,7 +33,7 @@ public class FishMinigameScript : MonoBehaviour
 
     InputEvents inputEvents => InputEvents.instance;
 
-    private void Awake()
+    public void Awake()
     {
         instance = this;
     }
@@ -40,6 +41,9 @@ public class FishMinigameScript : MonoBehaviour
     void Start()
     {
         inputEvents.skillCheckAction += SkillCheckActions;
+        inputEvents.skillCheckAction += () => { Debug.Log("PENITS"); };
+
+        skillCheckUI.SetActive(false);
         topPivotSlider = skillCheckSlider.maxValue;
         bottemPivotSlider = skillCheckSlider.minValue;
         /*Debug.Log("top pivot is: " + topPivotSlider + " and bottem pivot is: " + bottemPivotSlider);*/
@@ -63,8 +67,11 @@ public class FishMinigameScript : MonoBehaviour
         UpdateTargetRangeVisual();
         SkillCheck();
 
+        Debug.Log("cooldown is: " + pressCooldown);
+        //Debug.Log("minigame is done: " + skillcheckIsDone);
+
         if (Input.GetKeyDown(KeyCode.I)) // these 2 inputs are for testing and will not be used for the final game
-            lineIsMoving = true;
+            lineIsMoving = !lineIsMoving;
 
         if (Input.GetKeyDown(KeyCode.U))
         {
@@ -89,10 +96,11 @@ public class FishMinigameScript : MonoBehaviour
 
             if (progressSlider.value >= progressSlider.maxValue)
             {
+                pressCooldown = true;
                 Debug.Log("You caught a fish!"); // turn off the background and catch the fish here
                 progressSlider.value = 0f;
                 // gotta make up a way to remove the entire thing
-                this.gameObject.SetActive(false); 
+                skillcheckIsDone = true;
             }
         }
 
@@ -102,14 +110,17 @@ public class FishMinigameScript : MonoBehaviour
 
     private void SkillCheckActions()
     {
-        if (!pressCooldown)
+        if (skillCheckUI.activeSelf == false)
+            return;
+        pressCooldown = true;
+        if (!pressCooldown)  // logic should be turned around caus wtf bro
             return;
 
         pressCooldown = false;
         RandomizeTargetPos();
 
         if (sliderPosition <= topPosition && sliderPosition >= bottomPosition)
-            progressSlider.value += 10f;
+            progressSlider.value += 30f;
         else
             progressSlider.value -= 5f;
         StartCoroutine(CooldownSkillcheck(0.2f));
@@ -137,7 +148,6 @@ public class FishMinigameScript : MonoBehaviour
         bottomPosition = randomActualPosition - (targetRangeImage.sizeDelta.y / 2) - 2;
 
         sliderPosition = skillCheckSlider.value * barRange;
-
-        Debug.Log(sliderPosition <= topPosition && sliderPosition >= bottomPosition);
+        /*Debug.Log(sliderPosition <= topPosition && sliderPosition >= bottomPosition);*/
     }
 }

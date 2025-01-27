@@ -6,7 +6,6 @@ using UnityEngine.EventSystems;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("UI")]
-    public GameObject skillCheckUI; // temporarily here for check
 
     [Header("Movement")]
     public float movingSpeed;
@@ -19,8 +18,6 @@ public class PlayerMovement : MonoBehaviour
     bool grounded;
 
     public Transform orientation;
-
-    //public FishMinigameScript fishMinigameScript;
 
     float horizontalInput;
     float verticalInput;
@@ -49,10 +46,13 @@ public class PlayerMovement : MonoBehaviour
         else
             rb.drag = groundDrag; // grounded is not being used yet so for now this
 
+            //Debug.Log("Hamburger");
         if (Input.GetKeyDown(KeyCode.V))
-            skillCheckUI.SetActive(true);
+        {
+            FishMinigameScript.instance.skillCheckUI.SetActive(true);
+        }
         if (Input.GetKeyDown(KeyCode.B))
-            skillCheckUI.SetActive(false);
+            FishMinigameScript.instance.skillCheckUI.SetActive(false);
     }
 
     private void FixedUpdate()

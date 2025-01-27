@@ -12,6 +12,7 @@ public class InputEvents : MonoBehaviour
     public Action triggerAction;
     public Action<Vector2> walkAction;
     public Action skillCheckAction;
+    public Action fishingAction;
     private void Awake()
     {
         instance = this;
@@ -36,9 +37,13 @@ public class InputEvents : MonoBehaviour
 
     public void Skillcheck(InputAction.CallbackContext callback)
     {
-        skillCheckAction.Invoke();
+        skillCheckAction?.Invoke();
     }
 
+    public void Fishing(InputAction.CallbackContext callback)
+    {
+        fishingAction?.Invoke();
+    }
 
 
     // Update is called once per frame

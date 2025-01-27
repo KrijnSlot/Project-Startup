@@ -5,7 +5,7 @@ public class FishingRod : MonoBehaviour
 {
     public PickUpScript mainCamPickUpScript;
     public FishCheckScript bobberFishCheckScript;
-    //public FishMinigameScript fishMinigame;
+
 
     public bool isEquipped;
 
@@ -13,6 +13,7 @@ public class FishingRod : MonoBehaviour
     public bool pulled;
     public bool timerDone;
     public bool fishCaught;
+    private bool canClick;
 
     Animator animator;
     public GameObject bobberPrefab;
@@ -28,10 +29,17 @@ public class FishingRod : MonoBehaviour
     public Transform castPoint; // Point where the bobber will be launched from (e.g., player's hand or rod tip).
     public float castForce = 15f;
 
+    Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
+
+    InputEvents inputEvents => InputEvents.instance;
+
     //private GameObject instantiatedBait;
 
     private void Start()
     {
+        canClick = true;
+        inputEvents.fishingAction += MyInputs;
+
         rope.SetActive(false);
         bobberPrefab.SetActive(false);
         animator = GetComponent<Animator>();
@@ -43,40 +51,52 @@ public class FishingRod : MonoBehaviour
     {
         if (mainCamPickUpScript.holdingRod)
         {
-            myInputs();
+            ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
             isEquipped = true;
+            SkillcheckTester();
         }
         else { isEquipped = false; }
+        //Debug.Log("minigame in fishing script is done: " + FishMinigameScript.instance.skillcheckIsDone);
+        //Debug.Log("fish is caught: " + fishCaught);
     }
 
-    void myInputs()
+    void MyInputs()
     {
+        if (!canClick) return;
+        canClick = false;
+
+
+        if (isCasted)
+        {
+            PullRod();
+            StartCoroutine(ClickCooldown(0.2f));
+            return;
+        }
+
         if (isEquipped)
         {
-            Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
-
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+            if (!isCasted && !pulled)
             {
-                if (Input.GetMouseButtonDown(0) && !isCasted && !pulled)
+                RaycastHit hit;
+
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity))
                 {
-                    StartCoroutine(CastRod(hit.point));
+                    Debug.Log(hit.point);
+                    CastRod(hit.point);
                 }
             }
         }
 
-        if (isCasted && Input.GetMouseButtonDown(1))
-        {
-            PullRod();
-        }
+        StartCoroutine(ClickCooldown(0.2f));
     }
 
-    IEnumerator CastRod(Vector3 targetPoint)
+    void CastRod(Vector3 targetPoint)
     {
         isCasted = true;
 
         // Ensure the rope and bobber are active.
         rope.SetActive(true);
+
         bobberPrefab.SetActive(true);
 
         // Get the Rigidbody component of the existing bobber.
@@ -93,15 +113,22 @@ public class FishingRod : MonoBehaviour
         // Calculate the direction to cast the bobber.
         Vector3 castDirection = (targetPoint - castPoint.position).normalized;
 
+
         // Apply force to the bobber in the direction of the cast.
         bobberRb.velocity = Vector3.zero; // Reset any previous velocity.
+        //yield return new WaitForSeconds(0); shit does not even work well
         bobberRb.AddForce(castDirection * castForce, ForceMode.VelocityChange);
 
         // Wait for a moment to simulate the cast action.
-        yield return new WaitForSeconds(0.5f);
 
         // Optional: Add a condition to reset or pull the bobber later.
         pulled = false;
+    }
+
+    private IEnumerator ClickCooldown(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        canClick = true;
     }
 
     // Lock x and z movement when the bobber hits the "FishingArea" tag.
@@ -173,32 +200,37 @@ public class FishingRod : MonoBehaviour
         isCasted = false;
         pulled = true;
 
-        if (timerDone && pulled)
+        if (/*timerDone &&*/ pulled)
         {
+            //Debug.Log("you fucking did it bitchdickwod");
             timerDone = false;
             fishCaught = true;
         }
-        else if (!timerDone && pulled)
+        /*else if (!timerDone && pulled)
         {
             isCasted = false;
-        }
-
-        if (fishCaught)
-        {
-            gameManager.RandomAddMoney(10, 100);
-            bool miniGameDone = false;
-            //fishMinigame.skillCheckUI.gameObject.SetActive(true);
-            // ---- > Start Minigame Logic
-            if (miniGameDone)
-            {
-                fishCaught = false;
-                //fishMinigame.skillCheckUI.gameObject.SetActive(false);
-            }
-        }
+        }*/
 
         pulled = false;
         rope.SetActive(false);
         bobberPrefab.SetActive(false);
+    }
+
+    private void SkillcheckTester()
+    {
+        if (fishCaught)
+        {
+            //gameManager.RandomAddMoney(10, 100);
+
+            FishMinigameScript.instance.skillCheckUI.SetActive(true);
+            // ---- > Start Minigame Logic
+            if (FishMinigameScript.instance.skillcheckIsDone == true)
+            {
+                FishMinigameScript.instance.skillCheckUI.SetActive(false);
+                fishCaught = false;
+                FishMinigameScript.instance.skillcheckIsDone = false;
+            }
+        }
     }
 
     void ResetTimer()
