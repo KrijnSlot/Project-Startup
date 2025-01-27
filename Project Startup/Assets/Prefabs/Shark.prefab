@@ -84,14 +84,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5af103f2e8509f64596e2af042ae454f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boat: {fileID: 0}
+  attackCooldown: 5
+  boat: {fileID: 919132149155446097, guid: 27374d2c52d34874d9296ebc3e34fed8, type: 3}
   sharkSpeed: 5
   isBoat:
     serializedVersion: 2
     m_Bits: 256
   animator: {fileID: 4428761180799124295}
-  allBoatPoints:
-  - {fileID: 0}
 --- !u!136 &7481625888687215161
 CapsuleCollider:
   m_ObjectHideFlags: 0
