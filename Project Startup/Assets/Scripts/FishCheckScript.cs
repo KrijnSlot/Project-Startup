@@ -2,11 +2,20 @@ using UnityEngine;
 
 public class FishCheckScript : MonoBehaviour
 {
+    public static FishCheckScript instance;
+
     public float maxFishDistance = 5;
     public string fishLayerName = "isFish";
     private int fishLayer;
 
+    [HideInInspector] public bool canBeCaught;
+
     [HideInInspector] public GameObject closesFish;
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     void Start()
     {
@@ -41,10 +50,12 @@ public class FishCheckScript : MonoBehaviour
 
         if (closestFish != null)
         {
+            canBeCaught = true;
             Debug.Log($"Closest fish is {closestFish.name} at distance {shortestDistance}");
         }
         else
         {
+            canBeCaught = false;
             Debug.Log("No fish within range.");
         }
 

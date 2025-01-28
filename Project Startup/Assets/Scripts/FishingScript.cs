@@ -54,7 +54,9 @@ public class FishingRod : MonoBehaviour
         {
             ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
             isEquipped = true;
-            SkillcheckTester();
+
+            if (FishCheckScript.instance.canBeCaught)
+                SkillcheckTester();
         }
         else { isEquipped = false; }
         //Debug.Log("minigame in fishing script is done: " + FishMinigameScript.instance.skillcheckIsDone);
@@ -93,7 +95,7 @@ public class FishingRod : MonoBehaviour
         StartCoroutine(ClickCooldown(0.2f));
     }
 
-    void CastRod(Vector3 targetPoint)
+    void CastRod(Vector3 targetPoint) // changed back
     {
         isCasted = true;
 
@@ -119,7 +121,7 @@ public class FishingRod : MonoBehaviour
 
         // Apply force to the bobber in the direction of the cast.
         bobberRb.velocity = Vector3.zero; // Reset any previous velocity.
-        //yield return new WaitForSeconds(0); shit does not even work well
+        //yield return new WaitForSeconds(0); shit is not even needed here 
         bobberRb.AddForce(castDirection * castForce, ForceMode.VelocityChange);
 
         // Wait for a moment to simulate the cast action.
@@ -203,7 +205,7 @@ public class FishingRod : MonoBehaviour
         isCasted = false;
         pulled = true;
 
-        if (/*timerDone &&*/ pulled)
+        if (/*timerDone &&*/ pulled && FishCheckScript.instance.canBeCaught)
         {
             //Debug.Log("you fucking did it bitchdickwod");
             timerDone = false;
@@ -214,9 +216,18 @@ public class FishingRod : MonoBehaviour
             isCasted = false;
         }*/
 
-        pulled = false;
-        rope.SetActive(false);
-        bobberPrefab.SetActive(false);
+        if (fishCaught)
+        {
+            pulled = false;
+            rope.SetActive(false);
+            bobberPrefab.SetActive(false);
+        }
+        else if (!fishCaught)
+        {
+            pulled = false;
+            rope.SetActive(false);
+            bobberPrefab.SetActive(false);
+        }
     }
 
     private void SkillcheckTester()
