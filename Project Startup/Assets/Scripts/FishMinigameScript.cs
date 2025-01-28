@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
@@ -27,6 +28,10 @@ public class FishMinigameScript : MonoBehaviour
     [SerializeField] private Slider progressSlider;
     [SerializeField] private float progressSliderVelocity = -2.5f;
     [SerializeField] public bool skillcheckIsDone = false;
+    [SerializeField] private AudioClip skillCheckHitAudioClip;
+    [SerializeField] private AudioClip skillCheckMissAudioClip;
+    [SerializeField] private AudioSource skillCheckAudioSource;
+
 
     float randomPosition, allowedRange, clampedRange, parentHeight;
     private float movingLineValue, topPivotSlider, bottemPivotSlider, randomActualPosition, barRange, topPosition, bottomPosition, sliderPosition;
@@ -121,7 +126,11 @@ public class FishMinigameScript : MonoBehaviour
         RandomizeTargetPos();
 
         if (sliderPosition <= topPosition && sliderPosition >= bottomPosition)
+        {  // checks if the skillcheck is in the box
             progressSlider.value += 30f;
+            skillCheckAudioSource.clip = skillCheckHitAudioClip;
+            skillCheckAudioSource.Play();
+        }
         else
             progressSlider.value -= 5f;
         StartCoroutine(CooldownSkillcheck(0.2f));
