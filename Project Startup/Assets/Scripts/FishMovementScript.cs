@@ -15,7 +15,7 @@ public class FishMovementScript : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        speed = Random.Range(3.0f, 3.5f);
+        speed = 1; //Random.Range(3.0f, 3.5f);
     }
 
     // Update is called once per frame
