@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7481625888687215161}
   m_Layer: 7
   m_Name: Shark
-  m_TagString: Untagged
+  m_TagString: isShark
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -91,6 +91,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   animator: {fileID: 4428761180799124295}
+  sharkHP: 0
+  allBoatPoints: []
+  spawningScript: {fileID: 0}
 --- !u!136 &7481625888687215161
 CapsuleCollider:
   m_ObjectHideFlags: 0
