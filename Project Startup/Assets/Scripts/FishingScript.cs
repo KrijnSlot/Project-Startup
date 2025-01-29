@@ -211,19 +211,9 @@ public class FishingRod : MonoBehaviour
             timerDone = false;
             fishCaught = true;
         }
-        /*else if (!timerDone && pulled)
+        else if (/*!timerDone && */pulled && !fishCaught)
         {
             isCasted = false;
-        }*/
-
-        if (fishCaught)
-        {
-            pulled = false;
-            rope.SetActive(false);
-            bobberPrefab.SetActive(false);
-        }
-        else if (!fishCaught)
-        {
             pulled = false;
             rope.SetActive(false);
             bobberPrefab.SetActive(false);
@@ -243,6 +233,10 @@ public class FishingRod : MonoBehaviour
                 FishMinigameScript.instance.skillCheckUI.SetActive(false);
                 fishCaught = false;
                 FishMinigameScript.instance.skillcheckIsDone = false;
+
+                pulled = false;
+                rope.SetActive(false);
+                bobberPrefab.SetActive(false);
             }
         }
     }
