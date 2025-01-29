@@ -12,6 +12,8 @@ public class ProjectileBasedGunScript : MonoBehaviour
     public GameObject bulletPrefab;
     public Transform bulletSpawn;
 
+    public PickUpScript mainCamPickUpScript;
+
     public float bulletVelocity = 30;
     public float bulletPrefabLifeTime = 3f;
 
@@ -28,6 +30,7 @@ public class ProjectileBasedGunScript : MonoBehaviour
 
     private void FireWeapon()
     {
+        if(mainCamPickUpScript.holdingGun)
         if (!canShoot)
             return;
         Gunshot.Play();

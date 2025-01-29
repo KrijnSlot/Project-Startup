@@ -13,7 +13,6 @@ public class SharkSpawningScript : MonoBehaviour
 
     void Start()
     {
-        // Start the spawning coroutine
         StartCoroutine(SpawnSharkRoutine());
     }
 
@@ -21,11 +20,9 @@ public class SharkSpawningScript : MonoBehaviour
     {
         while (true)
         {
-            // Wait for a random time between 5 and 15 seconds
             float waitTime = Random.Range(0f, 5f);
             yield return new WaitForSeconds(waitTime);
 
-            // Attempt to spawn a shark
             SpawnShark();
         }
     }
