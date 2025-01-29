@@ -167,10 +167,7 @@ public class SharkScript : MonoBehaviour
 
         if (sharkHP <= 0)
         {
-            // Remove this shark from the sharks list
-            //spawningScript.sharks.Remove();
-
-            // Destroy the shark game object
+            spawningScript.sharks.Remove(gameObject);
             Destroy(gameObject);
         }
     }
