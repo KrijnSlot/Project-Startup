@@ -221,7 +221,19 @@ MonoBehaviour:
     m_ActionId: 5db624ce-6ea2-44e5-8b3e-634e060c2bc6
     m_ActionName: Player/SkillCheck[/Keyboard/space]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: InputEvents, Assembly-CSharp
+        m_MethodName: Fishing
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 4e4315ec-9a07-40d2-b4e2-4c245e905e1a
     m_ActionName: Player/Fishing[/Mouse/leftButton]
   m_NeverAutoSwitchControlSchemes: 0
