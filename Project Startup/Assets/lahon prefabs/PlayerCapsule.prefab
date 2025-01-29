@@ -696,6 +696,7 @@ GameObject:
   - component: {fileID: 8305214340232911341}
   - component: {fileID: 6303381458253442310}
   - component: {fileID: 9023035683805262366}
+  - component: {fileID: -8545474728777059844}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -822,6 +823,20 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
+--- !u!114 &-8545474728777059844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4425730739138133978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nonRigidbodyVelocity: 0
+  attenuationObject: {fileID: 0}
 --- !u!1 &4790847157718610207
 GameObject:
   m_ObjectHideFlags: 0
@@ -1143,6 +1158,7 @@ MonoBehaviour:
   magSize: 12
   bulletsPerTap: 1
   allowButtonHold: 0
+  mainCamPickUpScript: {fileID: 0}
   cam: {fileID: 8305214340232911341}
   attackPoint: {fileID: 2760898175486940963}
   src: {fileID: 4858283536981709186}
