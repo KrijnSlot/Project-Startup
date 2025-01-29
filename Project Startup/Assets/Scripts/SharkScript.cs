@@ -11,7 +11,7 @@ public class SharkScript : MonoBehaviour
     public LayerMask isBoat; // LayerMask to detect boat points
     public Animator animator;
 
-    public int sharkHP = Random.Range(10, 15);
+    public int sharkHP;
 
     private bool inRange; // Check if shark is in range of a boat point
     private Rigidbody rb;
@@ -22,18 +22,18 @@ public class SharkScript : MonoBehaviour
     private PointScript currentPointScript; // The PointScript of the currently occupied point
     public SharkSpawningScript spawningScript;
 
+    [Header("The damage the shark gets")]
+    public int damage = 1;
+
     void Start()
     {
+        sharkHP = Random.Range(2, 5);
         rb = GetComponent<Rigidbody>();
         rb.useGravity = false; // Disable gravity for the shark
 
         // Find all boat points at runtime
         allBoatPoints = GameObject.FindGameObjectsWithTag("BoatPoint");
-
-        if (allBoatPoints.Length == 0)
-        {
-            Debug.LogWarning("No boat points found! Make sure boat points are tagged as 'BoatPoint'.");
-        }
+        spawningScript = FindObjectOfType<SharkSpawningScript>();
     }
 
     void Update()
@@ -161,16 +161,19 @@ public class SharkScript : MonoBehaviour
         }
     }
 
-    public void SharkHit(int damage)
+    public void SharkHit()
     {
         sharkHP -= damage;
 
         if (sharkHP <= 0)
         {
+            Debug.Log($"Shark {gameObject.name} is dead.");
             spawningScript.sharks.Remove(gameObject);
             Destroy(gameObject);
         }
     }
+
+
 
 
     private void OnDestroy()
