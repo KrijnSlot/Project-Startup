@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
@@ -16,17 +17,26 @@ public class FishMinigameScript : MonoBehaviour
     /// </summary>
 
 
-    public static FishMinigameScript instance;
+    [HideInInspector]public static FishMinigameScript instance;
+    
     [Header("GameObjects")]
     [SerializeField] public GameObject skillCheckUI;
     [SerializeField] private Slider skillCheckSlider; // Reference to the UI Slider
     [SerializeField] private RectTransform targetRangeImage;
+
     [Header("Speed")]
     [SerializeField] float velocity = 1.2f;
+
     [Header("Progress Bar")]
     [SerializeField] private Slider progressSlider;
     [SerializeField] private float progressSliderVelocity = -2.5f;
     [SerializeField] public bool skillcheckIsDone = false;
+
+    [Header("Audio")]
+    [SerializeField] private AudioClip skillCheckHitAudioClip;
+    [SerializeField] private AudioClip skillCheckMissAudioClip;
+    [SerializeField] private AudioSource skillCheckAudioSource;
+
 
     float randomPosition, allowedRange, clampedRange, parentHeight;
     private float movingLineValue, topPivotSlider, bottemPivotSlider, randomActualPosition, barRange, topPosition, bottomPosition, sliderPosition;
@@ -42,7 +52,7 @@ public class FishMinigameScript : MonoBehaviour
     void Start()
     {
         inputEvents.skillCheckAction += SkillCheckActions;
-        inputEvents.skillCheckAction += () => { Debug.Log("PENITS"); };
+        inputEvents.skillCheckAction += () => { Debug.Log("it works.."); };
 
         skillCheckUI.SetActive(false);
         topPivotSlider = skillCheckSlider.maxValue;
@@ -111,7 +121,7 @@ public class FishMinigameScript : MonoBehaviour
 
     private void SkillCheckActions()
     {
-        if (skillCheckUI.activeSelf == false)
+        if (!skillCheckUI.activeSelf)
             return;
         if (pressCooldown)
             return;
@@ -121,7 +131,11 @@ public class FishMinigameScript : MonoBehaviour
         RandomizeTargetPos();
 
         if (sliderPosition <= topPosition && sliderPosition >= bottomPosition)
+        {  // checks if the skillcheck is in the box
             progressSlider.value += 30f;
+            /*skillCheckAudioSource.clip = skillCheckHitAudioClip;
+            skillCheckAudioSource.Play();*/
+        }
         else
             progressSlider.value -= 5f;
         StartCoroutine(CooldownSkillcheck(0.2f));

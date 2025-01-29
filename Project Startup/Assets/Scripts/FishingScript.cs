@@ -1,3 +1,4 @@
+using GogoGaga.OptimizedRopesAndCables;
 using System.Collections;
 using UnityEngine;
 
@@ -21,22 +22,23 @@ public class FishingRod : MonoBehaviour
 
     private GameObject caughtFish;
 
+    private Rope ropeScript;
+
     Transform baitPosition;
 
     private float timer;
     private float randomTime;
 
-    public Transform castPoint; // Point where the bobber will be launched from (e.g., player's hand or rod tip).
+    public Transform castPoint; 
     public float castForce = 15f;
 
     Ray ray;
 
     InputEvents inputEvents => InputEvents.instance;
 
-    //private GameObject instantiatedBait;
-
     private void Start()
     {
+        ropeScript = FindObjectOfType<Rope>();
         ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
         canClick = true;
         inputEvents.fishingAction += MyInputs;
@@ -59,8 +61,6 @@ public class FishingRod : MonoBehaviour
                 SkillcheckTester();
         }
         else { isEquipped = false; }
-        //Debug.Log("minigame in fishing script is done: " + FishMinigameScript.instance.skillcheckIsDone);
-        //Debug.Log("fish is caught: " + fishCaught);
     }
 
     void MyInputs()
@@ -95,38 +95,26 @@ public class FishingRod : MonoBehaviour
         StartCoroutine(ClickCooldown(0.2f));
     }
 
-    void CastRod(Vector3 targetPoint) // changed back
+    void CastRod(Vector3 targetPoint) 
     {
         isCasted = true;
+        
+        ropeScript.ropeLength = 1;
 
-        // Ensure the rope and bobber are active.
         rope.SetActive(true);
 
         bobberPrefab.SetActive(true);
-
-        // Get the Rigidbody component of the existing bobber.
         Rigidbody bobberRb = bobberPrefab.GetComponent<Rigidbody>();
 
-        // Ensure the Rigidbody is properly set up.
-        bobberRb.isKinematic = false; // Ensure it's not static.
-        bobberRb.useGravity = true;   // Enable gravity for realism.
-        bobberRb.constraints = RigidbodyConstraints.None; // Remove constraints.
+        bobberRb.isKinematic = false; 
+        bobberRb.useGravity = true; 
+        bobberRb.constraints = RigidbodyConstraints.None;
 
-        // Reset the bobber's position to the cast point.
         bobberPrefab.transform.position = castPoint.position;
-
-        // Calculate the direction to cast the bobber.
         Vector3 castDirection = (targetPoint - castPoint.position).normalized;
-
-
-        // Apply force to the bobber in the direction of the cast.
-        bobberRb.velocity = Vector3.zero; // Reset any previous velocity.
-        //yield return new WaitForSeconds(0); shit is not even needed here 
+        bobberRb.velocity = Vector3.zero; 
         bobberRb.AddForce(castDirection * castForce, ForceMode.VelocityChange);
 
-        // Wait for a moment to simulate the cast action.
-
-        // Optional: Add a condition to reset or pull the bobber later.
         pulled = false;
     }
 
@@ -139,6 +127,7 @@ public class FishingRod : MonoBehaviour
     // Lock x and z movement when the bobber hits the "FishingArea" tag.
     void OnTriggerEnter(Collider other)
     {
+
         if (other.CompareTag("FishingArea"))
         {
             Rigidbody bobberRb = bobberPrefab.GetComponent<Rigidbody>();
@@ -149,55 +138,6 @@ public class FishingRod : MonoBehaviour
             Debug.Log("Bobber entered the FishingArea and x/z axes are locked.");
         }
     }
-
-
-
-    /*    IEnumerator CastRod(Vector3 targetPosition)
-        {
-            fishCaught = false;
-            isCasted = true;
-            animator.SetTrigger("Cast");
-
-            // Create a delay between the animation and when the bait appears in the water
-            yield return new WaitForSeconds(1f);
-
-            rope.SetActive(true);
-            bobber.SetActive(true);
-            //instantiatedBait = Instantiate(bobber);
-            bobber.transform.position = targetPosition;
-
-            baitPosition = bobber.transform;
-
-            // Reset the timer and set a new random time when casting
-            ResetTimer();
-
-            // ---- > Start Fish Bite Logic
-            while (isCasted)
-            {
-                // Increment the timer
-                timer += Time.deltaTime;
-
-                // Check if the timer exceeds or equals the random time
-                if (timer >= randomTime)
-                {
-                    Debug.Log("Random timer reached!");
-                    Debug.Log("catch");
-
-                    // Perform your desired action here, e.g., catch the fish
-                    caughtFish = bobberFishCheckScript.closesFish;
-                    timerDone = true;
-                    // Reset the timer for the next cycle
-                    ResetTimer();
-
-                    // Break the loop to stop the coroutine once the fish is caught
-                    break;
-                }
-
-                yield return null; // Wait for the next frame
-            }
-        }*/
-
-
 
     private void PullRod()
     {
@@ -211,19 +151,9 @@ public class FishingRod : MonoBehaviour
             timerDone = false;
             fishCaught = true;
         }
-        /*else if (!timerDone && pulled)
+        else if (/*!timerDone && */pulled && !fishCaught)
         {
             isCasted = false;
-        }*/
-
-        if (fishCaught)
-        {
-            pulled = false;
-            rope.SetActive(false);
-            bobberPrefab.SetActive(false);
-        }
-        else if (!fishCaught)
-        {
             pulled = false;
             rope.SetActive(false);
             bobberPrefab.SetActive(false);
@@ -237,12 +167,15 @@ public class FishingRod : MonoBehaviour
             //gameManager.RandomAddMoney(10, 100);
 
             FishMinigameScript.instance.skillCheckUI.SetActive(true);
-            // ---- > Start Minigame Logic
             if (FishMinigameScript.instance.skillcheckIsDone == true)
             {
                 FishMinigameScript.instance.skillCheckUI.SetActive(false);
                 fishCaught = false;
                 FishMinigameScript.instance.skillcheckIsDone = false;
+
+                pulled = false;
+                rope.SetActive(false);
+                bobberPrefab.SetActive(false);
             }
         }
     }
@@ -250,7 +183,7 @@ public class FishingRod : MonoBehaviour
     void ResetTimer()
     {
         timer = 0f;
-        randomTime = UnityEngine.Random.Range(2f, 6f); // Random value between 1 and 5 seconds
+        randomTime = UnityEngine.Random.Range(2f, 6f);
         Debug.Log($"New random time set: {randomTime} seconds");
     }
     GameManager gameManager => GameManager.Instance;

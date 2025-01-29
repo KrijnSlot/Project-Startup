@@ -82,7 +82,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Absorption_Coefficient: 0.1
+    - _Absorption_Coefficient: 0.069
     - _AlphaClip: 0
     - _AlphaToMask: 0
     - _Blend: 0

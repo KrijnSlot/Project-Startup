@@ -82,7 +82,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Absorption_Coefficient: 0.299
+    - _Absorption_Coefficient: 0.199
     - _AlphaClip: 0
     - _AlphaToMask: 0
     - _Blend: 0
@@ -117,12 +117,12 @@ Material:
     - _depth: 0.4
     - _depth_fade_distance: 318.22
     m_Colors:
-    - _Absorption_Colour: {r: 0.82641506, g: 0.20426483, b: 0.2080129, a: 0}
+    - _Absorption_Colour: {r: 0.83396226, g: 0.26277676, b: 0.26277676, a: 0}
     - _BaseColor: {r: 0.30326086, g: 0.7207546, b: 0.7063407, a: 1}
     - _Color: {r: 0.30326083, g: 0.7207546, b: 0.7063407, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _WaterColour: {r: 0.48157346, g: 0.90188676, b: 0.89165795, a: 0}
+    - _WaterColour: {r: 0.081131995, g: 0.97643936, b: 1, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &8967068976113786361
 MonoBehaviour:
