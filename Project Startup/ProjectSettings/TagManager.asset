@@ -5,9 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - FishingArea
-  - Enemy
   - canPickUp
   - BoatPoint
+  - isShark
   layers:
   - Default
   - TransparentFX

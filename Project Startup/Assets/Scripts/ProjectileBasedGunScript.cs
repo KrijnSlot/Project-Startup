@@ -12,6 +12,8 @@ public class ProjectileBasedGunScript : MonoBehaviour
     public GameObject bulletPrefab;
     public Transform bulletSpawn;
 
+    public PickUpScript mainCamPickUpScript;
+
     public float bulletVelocity = 30;
     public float bulletPrefabLifeTime = 3f;
 
@@ -19,8 +21,6 @@ public class ProjectileBasedGunScript : MonoBehaviour
 
     InputEvents inputEvents => InputEvents.instance;
 
-
-    // Start is called before the first frame update
     void Start()
     {
         canShoot = true;
@@ -28,14 +28,9 @@ public class ProjectileBasedGunScript : MonoBehaviour
         inputEvents.triggerAction += FireWeapon;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        Debug.Log(canShoot);
-    }
-
     private void FireWeapon()
     {
+        if(mainCamPickUpScript.holdingGun)
         if (!canShoot)
             return;
         Gunshot.Play();
