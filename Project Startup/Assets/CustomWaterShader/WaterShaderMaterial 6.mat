@@ -104,7 +104,7 @@ Material:
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
-    - _Posterize_steps: 6
+    - _Posterize_steps: -6.27
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
@@ -120,8 +120,8 @@ Material:
     - _depth: 0.4
     - _depth_colour_change_strength: 0
     - _depth_fade_distance: 0.2
-    - _refraction_strength: 8.64
-    - _transparency_strength: 1
+    - _refraction_strength: 14.09
+    - _transparency_strength: 2
     m_Colors:
     - _Absorption_Colour: {r: 0.83396226, g: 0.26277676, b: 0.26277676, a: 0}
     - _BaseColor: {r: 0.30326086, g: 0.7207546, b: 0.7063407, a: 1}

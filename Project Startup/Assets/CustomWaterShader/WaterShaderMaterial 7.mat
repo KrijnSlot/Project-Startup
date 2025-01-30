@@ -100,7 +100,7 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _Horizon_strength: 2
+    - _Horizon_strength: 7.64
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
@@ -119,18 +119,18 @@ Material:
     - _ZWrite: 1
     - _depth: 0.4
     - _depth_colour_change_strength: 0
-    - _depth_fade_distance: 0.2
+    - _depth_fade_distance: 1.48
     - _refraction_strength: 8.64
-    - _transparency_strength: 1
+    - _transparency_strength: 1.43
     m_Colors:
     - _Absorption_Colour: {r: 0.83396226, g: 0.26277676, b: 0.26277676, a: 0}
     - _BaseColor: {r: 0.30326086, g: 0.7207546, b: 0.7063407, a: 1}
     - _Color: {r: 0.30326083, g: 0.7207546, b: 0.7063407, a: 1}
-    - _DeepWaterColour: {r: 0.19889632, g: 0.2071253, b: 0.6981132, a: 0.1882353}
+    - _DeepWaterColour: {r: 0.08061941, g: 0.39156818, b: 0.6377357, a: 0.1882353}
     - _Deep_Colour: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Horizon_Colour: {r: 0.86415094, g: 0.1418511, b: 0.20285812, a: 0.33333334}
-    - _ShallowWaterColour: {r: 0.034795243, g: 0.5940468, b: 0.68301874, a: 0.23921569}
+    - _Horizon_Colour: {r: 0.93207544, g: 0.6436834, b: 0.13189735, a: 0.33333334}
+    - _ShallowWaterColour: {r: 0.1288073, g: 0.6204613, b: 0.86415094, a: 0.23921569}
     - _Shallow_Colour: {r: 0.13325018, g: 0.27915466, b: 0.7433963, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _UV: {r: 0, g: 0, b: 0, a: 0}
