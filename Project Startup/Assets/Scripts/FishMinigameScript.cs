@@ -17,8 +17,8 @@ public class FishMinigameScript : MonoBehaviour
     /// </summary>
 
 
-    [HideInInspector]public static FishMinigameScript instance;
-    
+    [HideInInspector] public static FishMinigameScript instance;
+
     [Header("GameObjects")]
     [SerializeField] public GameObject skillCheckUI;
     [SerializeField] private Slider skillCheckSlider; // Reference to the UI Slider
@@ -69,7 +69,6 @@ public class FishMinigameScript : MonoBehaviour
 
         RandomizeTargetPos();
 
-
     }
 
 
@@ -78,10 +77,11 @@ public class FishMinigameScript : MonoBehaviour
         UpdateTargetRangeVisual();
         SkillCheck();
 
-        Debug.Log("cooldown is: " + pressCooldown);
+
+        Debug.Log(sliderPosition <= topPosition && sliderPosition >= bottomPosition);
         //Debug.Log("minigame is done: " + skillcheckIsDone);
 
-        if (Input.GetKeyDown(KeyCode.I)) // these 2 inputs are for testing and will not be used for the final game
+        /*if (Input.GetKeyDown(KeyCode.I)) // these 2 inputs are for testing and will not be used for the final game
             lineIsMoving = !lineIsMoving;
 
         if (Input.GetKeyDown(KeyCode.U))
@@ -91,7 +91,7 @@ public class FishMinigameScript : MonoBehaviour
             // Debug.Log(range);
 
             lineIsMoving = true;
-        }
+        }*/
     }
 
     void SkillCheck()
@@ -125,7 +125,7 @@ public class FishMinigameScript : MonoBehaviour
             return;
         if (pressCooldown)
             return;
-        
+
         pressCooldown = true;
 
         RandomizeTargetPos();
@@ -137,7 +137,8 @@ public class FishMinigameScript : MonoBehaviour
             skillCheckAudioSource.Play();*/
         }
         else
-            progressSlider.value -= 5f;
+            progressSlider.value -= 10f;
+
         StartCoroutine(CooldownSkillcheck(0.2f));
     }
 
