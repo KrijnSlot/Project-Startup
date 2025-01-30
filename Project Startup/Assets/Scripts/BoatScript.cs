@@ -1,6 +1,8 @@
+using Boxophobic.Utils;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class BoatScript : MonoBehaviour
@@ -26,6 +28,7 @@ public class BoatScript : MonoBehaviour
     void Update()
     {
         slider.value = boatHP;
+        GameOver();
     }
 
     public static void DoDamage2Boat(int damage)
@@ -35,6 +38,15 @@ public class BoatScript : MonoBehaviour
             int newDamage = Random.Range(damage / 2, damage);
             instance.boatHP -= newDamage;
             instance.boatHP = Mathf.Clamp(instance.boatHP, 0, instance.boatMaxHP);
+        }
+    }
+
+    void GameOver()
+    {
+        if (boatHP == 0)
+        {
+            Debug.Log("ENDSCENE");
+            SceneManager.LoadScene("ENDSCENE");
         }
     }
 }
