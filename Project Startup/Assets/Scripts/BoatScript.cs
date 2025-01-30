@@ -1,23 +1,40 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BoatScript : MonoBehaviour
 {
-    [SerializeField] private int boatHP;
+    [SerializeField] private int boatHP = 100;
+    [SerializeField] private Slider slider;
     private int boatMaxHP;
 
-    public int sliderBoatHP;
+    private static BoatScript instance;
+
+    void Awake()
+    {
+        instance = this;
+    }
 
     void Start()
     {
         boatMaxHP = boatHP;
-        sliderBoatHP = boatHP;
+        slider.maxValue = boatMaxHP;
+        slider.value = boatHP;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        sliderBoatHP = boatHP / boatMaxHP;
+        slider.value = boatHP;
+    }
+
+    public static void DoDamage2Boat(int damage)
+    {
+        if (instance != null)
+        {
+            int newDamage = Random.Range(damage / 2, damage);
+            instance.boatHP -= newDamage;
+            instance.boatHP = Mathf.Clamp(instance.boatHP, 0, instance.boatMaxHP);
+        }
     }
 }

@@ -117,6 +117,8 @@ public class SharkScript : MonoBehaviour
                 canAttack = false; 
                 animator.SetTrigger("Attack");
 
+                BoatScript.DoDamage2Boat(50);
+
                 StartCoroutine(AttackCooldown(pointScript));
             }
         }
@@ -153,9 +155,6 @@ public class SharkScript : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
-
-
 
     private void OnDestroy()
     {
