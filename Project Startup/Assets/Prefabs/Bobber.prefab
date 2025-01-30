@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 8606627106570755276}
   serializedVersion: 2
   m_LocalRotation: {x: 0.1273243, y: 0, z: 0, w: 0.99186116}
-  m_LocalPosition: {x: 2.5262868, y: 1.0199607e-16, z: -4.5934944}
+  m_LocalPosition: {x: -1.2848223, y: 1.0856392, z: -1.4840592}
   m_LocalScale: {x: 0.16326, y: 0.16326, z: 0.16326}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 66c163f111c59064ea47d2179f6f33f2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -132,7 +132,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -150,4 +150,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxFishDistance: 3
   fishLayerName: isFish
+  canBeCaught: 0
   closesFish: {fileID: 0}
